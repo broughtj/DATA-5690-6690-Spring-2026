@@ -20,6 +20,7 @@
 ## Course Description
 
 Computational finance is an interdisciplinary pillar of modern FinTech, at the intersection of data science, computer science, and economics. In this course students apply tools from computational science and statistics to identify and exploit arbitrage opportunities for entrepreneurial financial innovation. We will view the core concepts of the course through the perspectives of history, philosophy, and quantitative methods and technology. 
+
 The central numerical method that we will focus on is the Monte Carlo method. We will cover Monte Carlo from a FinTech perspective. Monte Carlo is the key numerical method for analysis of pricing, hedging, and risk management. Much more importantly, this is a course about FinTech from the perspective of Monte Carlo methods. This is ***Monte Carlo as a way of thinking.*** This turns out to be a profoundly deep and richly rewarding topic. 
 
 
