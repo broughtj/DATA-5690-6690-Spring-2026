@@ -1,0 +1,138 @@
+# __DATA 5690/6690: Computational Methods for FinTech__
+
+### Spring 2026
+
+## Course Information
+
+- Dates: Jan 5 -- Apr 28 
+- Time: T/H 9:00 -- 10:15 AM 
+- Room: Huntsman Hall 124
+
+
+## Instructor Information
+
+- [Tyler J. Brough](httpshttps://broughtj.github.io/)
+- Office: BUS 719
+- Office Hours: By appointment
+- Email: tyler.brough@usu.edu
+
+
+## Course Description
+
+Computational finance is an interdisciplinary pillar of modern FinTech, at the intersection of data science, computer science, and economics. In this course students apply tools from computational science and statistics to identify and exploit arbitrage opportunities for entrepreneurial financial innovation. We will view the core concepts of the course through the perspectives of history, philosophy, and quantitative methods and technology. 
+The central numerical method that we will focus on is the Monte Carlo method. We will cover Monte Carlo from a FinTech perspective. Monte Carlo is the key numerical method for analysis of pricing, hedging, and risk management. Much more importantly, this is a course about FinTech from the perspective of Monte Carlo methods. This is ***Monte Carlo as a way of thinking.*** This turns out to be a profoundly deep and richly rewarding topic. 
+
+
+## Course Mechanics 
+
+Welcome to a different kind of learning experience. This semester, **Computational Methods for FinTech** will operate less like a traditional lecture course and more like a high-velocity software development team. By adopting Agile methodology — the gold standard for managing complex projects in the tech and finance sectors — we are shifting our focus from static deadlines to iterative, value-driven development. Instead of working in isolation, you will collaborate in a cross-functional squad to tackle open-ended problems, delivering working code and analysis in short cycles known as 'sprints.' This structure is designed to mirror the reality of the FinTech industry, requiring you to embrace adaptability, rapid feedback, and continuous improvement just as you would in a professional engineering environment.
+
+Agile stems from lean manufacturing (especially as developed by Toyota) and most recently from software engineering. In 2001, a group of well-known software engineering thought leaders met in Snowbird, Utah, and drafted the [*Agile Manifesto*](https://agilemanifesto.org/). It has become a standard methodology for project management for high-performance teams in software engineering, data science, and fintech. It is well suited for experiential learning in higher education, especially for our subject in this class: computational methods for fintech. 
+
+
+### Team Roles 
+
+There are only a few roles in Agile: 
+
+* **Coach/Scrum Master (SM):** Responsible for helping the team to operate efficiently. The SM is like a player-coach. The SM runs the Sprint Planning and Demonstration meetings (see below). The SM's main job is to remove obstacles from the team during Sprints (see below). The SM is responsible for communicating with the Professor on behalf of the team. The SM is also a regular Team Member who accepts tasks during the sprint. The team decides upon a means to elect their SM. The responsibility of the SM will then rotate through the TMs after the first two sprints.
+
+* **Product Owner (PO):** Responsible for maintaining the **Product Backlog** and **Kanban Board** (see below). The PO is also a regular TM. The team decides upon a means to elect their PO. The responsibility of the PO will then rotate through the TMs after the first two sprints.
+
+* **Team Member (TM):** Responsible for helping the team to achieve its goals as set out in the Sprint Planning meeting. Each TM has an equal vote (including the SM and PO) in the decision process. 
+
+* **Stakeholders (SH):** Parties to whom the team is responsible for completing the project. In this case, the Professor is the main SH. If possible external SHs will be invited to meet with the team to give specific feedback.
+
+
+### Sprints 
+
+In Agile, the team works in time boxes called Sprints. This is a set amount of time, during which the team works to accomplish tasks from the Product Backlog. Each Sprint begins with a Sprint Planning Meeting. During this meeting the team votes on items from the Product Backlog to complete. The idea is to learn how fast the team can work to accomplish their work. At the end of the Sprint a Sprint Demonstration Meeting is held, during which TMs demonstrate the items they completed. The SM facilitates both of these meetings, but TMs have equal voice and votes. The SM's job is to review obstacles from TMs during the Sprint Demonstration Meeting and devise a means to help remove those obstacles during the next Sprint. In this way the team achieves acceleration in the amount of work they can accomplish. In this way, it is meant to be an adaptive group learning framework. The team's **Velocity** is the amount of work that can be accomplished during a given sprint.
+
+During the **Sprint Planning Meeting** the team should vote on items from the Product Backlog that they think they can complete during the Sprint. Individual TMs take upon themselves the responsibility for specific items from the Product Backlog. The PO keeps track of which TM is assigned which specific task. Each specific task should also have an agreed upon definition of what it means to be completed. This meeting should be no longer than required (I would guess about 45 minutes to an hour). Any longer than this and the team tends to lose focus. It is the responsibility of the SM to keep the meeting on point.
+
+During the **Sprint** the team carries out the work to accomplish the assigned tasks. I recommend sprints of one week. If they are too short, it is hard to complete any meaningful work. If they are too long, it is difficult to improve the team's velocity.
+
+At the end of the sprint the team holds a **Sprint Demonstration Meeting**, during which the TMs show their completed work. The SM asks questions to find out what obstacles stood in the way of TMs in completing their specific tasks. The team then discusses how those obstacles can be removed. What resources can be brought in to help? What methods can be used to help TMs be more efficient? It is essential that TMs be honest and open regarding their performance during the sprint so that the SM can help plan how to improve during the next sprint. At least two items should be added to the Product Backlog regarding how the team can improve velocity and be incorporated into the next sprint. The next sprint is then planned.
+
+The team should assign a point value to each task chosen from the Product Backlog to be included in a given sprint. The team can use whichever metric they like, but I suggest the Fibonacci method. See the Wikipedia article for more information on Fibonacci numbers: <https://en.wikipedia.org/wiki/Fibonacci_number>. This method assigns a $1, 2, 3, 5, 8, 13, 21, \ldots$ to each task. Each TM should place a specific number on each task. The SM should tally the points. If there is significant disagreement as to the point value of a specific task (e.g., one TM votes 8 and another TM votes 21) then the team should discuss the reasons for the disagreement. After discussion, another vote should be taken until there is convergence. If disagreement is small (e.g., one TM votes 5 and another TM votes 8) then the average point value should be taken. The number of points that a team can accomplish during a given sprint defines the velocity.
+
+
+### Daily Stand-Up Meetings 
+
+During a given sprint, the team should hold brief (no more than 20 minutes) **Daily Stand-up Meetings** to discuss progress towards the sprint goal. These meetings can be face-to-face or online. Use whatever technology facilitates this, such as Slack, Teams, Zoom, Google Hangouts, etc. Stand-up meetings could be asynchronous, but synchronous meetings are preferred if possible.
+
+During the stand-up meetings each TM should answer three succinct questions (asked by the SM of each TM in turn): 
+
+- **Question 1:** What did you do yesterday to help the team finish the sprint?
+
+- **Question 2:** What will you do today to help the team finish the sprint?
+
+- **Question 3:** Is there any obstacle blocking you or the team from finishing the Sprint Goal?
+
+The phrasing of the questions assumes that the meeting is held each morning. You can adapt them to your situation. The SM facilitates the meeting and ensures that the time limit is obeyed. The SM makes note of any obstacles noted.
+
+***NB:*** I suspect that asynchronous stand-ups may be necessary given the complexity of academic schedules. If so, then we should set a time of day by which each TM should report to the SM. The SM may want to build an automated tool to send out the daily questions each morning. 
+
+
+### Course Communications, Materials, Etc 
+
+- This course will use Canvas only very minimally (if at all).
+- We will communicate mostly via the Microsoft Teams channel. 
+- I will create a Box drive and share all readings, data, etc. with you.
+- There will be a GitHub repo for the course through which I will share course artifacts and content.
+- Students will be expected to submit all of their work via GitHub.
+- We will take an AI-native approach to development in this class.
+  - Since students have free access to [*Gemini Pro*](https://gemini.google/students/) we will use it as our primary source for our AI-enabled workflow.
+
+
+### Assessment 
+
+- **The Engine** (50%) 
+  - This is a Julia module that implements a Monte Carlo finance simulation engine. 
+  - We will use idiomatic Julia to implement the core modules to support financial simulation.
+  - It will include full and complete documentation.
+  - Standard option pricing methods such as the binomial, Black-Scholes-Merton, and risk-neutral Monte Carlo pricers will be foundational.
+
+- **Projects** (25%)    
+  - We will choose at least two main projects to work on this semester beyond the core methods. 
+  - During our first Sprint Planning Meeting we will choose the projects from a list provided by the Professor.
+  - Potential projects include, but are not limited to:
+    - Monte Carlo simulation of the option market-maker's dynamic hedging strategy.
+    - Simulating the maintenance of stablecoins pegged to USD.
+    - Michael Saylor's BTC Strategy (MSTR common shares and STRC preferred shares). 
+    - Contextual bandit algorithms for exercising American options.
+
+- **Exams** (15%) 
+  - There will be midterm and final exams.
+  - You can elect to take these as a group or as individuals.
+  - To take them as a group the vote must be unanimous in favor.
+  - The exams will be administered as oral exams at the whiteboard.
+  - Further details will be forthcoming once the details are finalized.
+
+- **The Canon** (10%) 
+  - There is a core set of readings for which each student must demonstrate mastery.
+  - The deliverables will be the following:
+    - A "Socratic dialogue" with Gemini that ends in the student providing a 3-5 sentence "zettelkasten" literature note statement/summary of the article in their own words. The entire conversation must be handed in as a Quarto document. 
+    - More details will be forthcoming.
+
+
+## Preliminary Outline of Topics 
+
+* Review of basic finance concepts (e.g. time value of money)
+* Austrian Catallactics (entrepreneurship, the price mechanism, subjectivism, etc)
+* Probability and statistics brief review
+* The Bayesian algorithm
+* Options theory (Binomial and Black-Scholes-Merton models)
+* Monte Carlo methods (RNMC, LSM, OHMC)
+* Posterior sampling via Approximate Bayesian Computation (ABC)
+* Statistical decision theory (utility/loss functions, proper scoring methods)
+* Other topics as needed
+
+## Important Dates 
+
+- First Day of Classes: Jan 5
+- Martin Luther King, Jr. Day (no class): Jan 19
+- Presidents' Day (no class): Feb 16
+- Spring break (no class): Mar 9 - 13
+- No-Test Week: Apr 15 - 21
+- Last Day of Classes: Apr 21
+- Final Examinations: Apr 22 - 28
