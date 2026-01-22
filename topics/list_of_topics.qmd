@@ -37,6 +37,3 @@ Here is a potential list of topics for the course.
 - Utility, loss, and proper scoring functions
 - Bandit models
 - Optimal hedged Monte Carlo (OHMC)
-
-
-

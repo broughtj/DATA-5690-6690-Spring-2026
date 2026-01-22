@@ -1,0 +1,74 @@
+---
+title: "Socratic Discussion Rules"
+subtitle: "Based on the Liberty Fund Model"
+format:
+  html:
+    theme: cosmo
+    toc: true
+    number-sections: true
+editor: visual
+---
+
+## The Core Philosophy
+
+The goal of this seminar is **Socratic Inquiry**. We are here to explore ideas, not to reach a consensus, solve a policy problem, or "win" a debate.
+
+* **No Lecturing:** The format is entirely conversational. No one delivers a lecture.
+* **Text-Based:** The conversation is grounded strictly in the assigned readings. Participants are expected to reference specific pages to support their points.
+* **Equality of Voice:** There is no hierarchy in the seminar room. A junior student has the same standing as a senior professional.
+
+---
+
+## The Queue System
+
+To ensure fairness and continuity, we utilize a dual-queue system managed by the Discussion Leader.
+
+::: {.callout-note title="The Two Signals"}
+There are two distinct ways to enter the conversation. Please use the correct hand signal.
+:::
+
+### 1. The Long Queue (New Points)
+* **Purpose:** To introduce a new topic, a new angle on the text, or a substantial argument that changes the direction.
+* **Signal:** ✋ **Raise your hand**.
+* **Priority:** *Standard.* You will be placed in the line and called upon when the current thread is exhausted.
+
+### 2. The Short Queue (Direct Responses)
+* **Purpose:** To make a brief rebuttal, a clarification, or a direct follow-up to the *current* speaker. It is **not** for introducing new ideas.
+* **Signal:** ☝️ **Raise one finger** (or "Pinch").
+* **Priority:** *High.* You are allowed to "jump" the line to keep the conversation fluid and coherent.
+
+> **Warning:** The Discussion Leader has the right to cut off a "Short Point" if it evolves into a lengthy monologue and place that person at the back of the Long Queue.
+
+---
+
+## Roles & Responsibilities
+
+### The Discussion Leader
+The Leader is a facilitator, not a teacher. They will not lecture on the material.
+* **Traffic Control:** Their primary job is to manage the queue and recognize speakers.
+* **Guardian of the Text:** They will intervene if the discussion drifts into anecdotes unrelated to the readings.
+* **Timekeeper:** They ensure the session starts and ends exactly on time.
+
+### The Participants
+* **Preparation:** You must read the material in advance.
+* **Civility:** Interrupting is strictly forbidden. Wait for the Leader to call on you.
+* **Active Listening:** If your point is made by someone else while you are waiting, please lower your hand to save time.
+
+---
+
+## Logistics
+
+| Feature | Rule |
+|:---|:---|
+| **The Table** | Seating is arranged in a circle or hollow square so everyone can see everyone else. |
+| **Citations** | Always cite the page number or paragraph when making a claim about the text. |
+| **Timing** | Sessions end promptly. If a sentence is unfinished when time is called, the session ends regardless. |
+| **Crosstalk** | Side conversations and whispering are discouraged; they detract from the shared inquiry. |
+
+::: {.callout-tip}
+### Summary Checklist
+1.  Read the text thoroughly.
+2.  Cite page numbers.
+3.  Use the correct hand signal (Hand vs. Finger).
+4.  Address the group, not just the leader.
+:::
