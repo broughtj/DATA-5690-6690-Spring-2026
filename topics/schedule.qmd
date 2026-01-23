@@ -1,0 +1,44 @@
+---
+title: "Schedule of Topics"
+format: gfm
+---
+
+## Schedule of Topics 
+
+| Date         | Canon                      | What are we doing?                                   | Quizzes |
+|--------------|----------------------------|------------------------------------------------------|---------|
+| 1/20/2026 TU | Hayek 1945                 | Retro/plan, canon discussion                         |         |
+| 1/22/2026 TH | Hayek 1945 cont'd          | Brandimarte App B, 2.1, 2.2                          |         |
+| 1/27/2026 TU | Buchanan SEJ 1964          | Retro/plan, canon discussion                         | Quiz 1  |
+| 1/29/2026 TH | Buchanan (all other)       | Brandimarte 2.3-2.6                                  |         |
+| 2/03/2026 TU | Boettke 1998, Horwitz 2004 | Retro/plan, canon discussion on "calculation debate" | Quiz 2  |
+| 2/05/2026 TH | Horwitz Chapter 1          | Continue canon discussion, Brandimarte 7.1, 7.2      |         |
+| 2/10/2026 TU | Farnsworth Chapters 3 & 4  | Retro/plan, canon discussion Farnsworth              | Quiz 3  |
+| 2/12/2026 TH |                            | Brandimarte 8.1, 4.2-4.4                             |         |
+| 2/17/2026 TU | Farnsworth Chapters 5 & 6  | Retro/plan, canon discussion Farnsworth              | Quiz 4  |
+| 2/19/2026 TH |                            | Brandimarte 2.7, 8.3                                 |         |
+| 2/24/2026 TU | Farnsworth Chapters 7 & 8  | Retro/plan, canon discussion Farnsworth              | Quiz 5  |
+| 2/26/2026 TH |                            | Brandimarte 4.5, 8.4                                 |         | 
+| 3/03/2026 TU |                            | Retro/plan, Project 1: Figlewski                     |         |
+| 3/05/2026 TH |                            | Brandimarte 8.5, McDonald 12 (appendix), 13          |         |
+| Spring Break |                            |                                                      |         | 
+| 3/17/2026 TU | O'Hagan                    | Retro/plan, Lad Chapter 1, Parmigiani & Inoue Chpt 1 | Quiz 6  |
+| 3/19/2026 TH |                            | Continue Lad 1 and P&I 1                             |         |
+| 3/24/2026 TU | Poirier 1988a,b            | Retro/plan, canon discuss Poirier                    | Quiz 7  |
+| 3/26/2026 TH |                            | Lad Chapter 2, Parmigiani & Inoue Chapter 2          |         |
+| 3/31/2026 TU |                            | Retro/plan, Project 2: Stablecoins                   |         |
+| 4/02/2026 TH |                            | Continue Lad 2, P&I 2                                |         |
+| 4/07/2026 TU | Poirier 2011               | Retro/plan, discuss Poirier                          | Quiz 8  |
+| 4/09/2026 TH |                            | Lad Chapter 3, Parmigiani & Inoue Chapter 3          |         |
+| 4/14/2026 TU |                            | Retro/plan, continue Lad 3, P&I 3                    | Quiz 9  | 
+| 4/16/2026 TH |                            | Parmigiani & Inoue Chapter 3, 10                     |         |
+| 4/21/2026 TU | Rilke                      | Continue P&I Chapter 10                              |         |
+
+
+## Wednessday Sessions 
+
+| Date         | What are we doing?              |
+|--------------|---------------------------------|
+| 1/21/2026    | Install Julia, set up Motoro.jl |
+| 1/28/2026    | ???                             |
+
