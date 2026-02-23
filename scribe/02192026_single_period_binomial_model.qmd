@@ -1,0 +1,417 @@
+---
+# ============================================================
+# DATA 5690/6690 Scribe Notes — Quarto Template
+# Edit the four fields below for each new lecture.
+# ============================================================
+lecture-number: "7"
+lecture-title: "Lecture 7: The Single-Period Binomial Option Pricing Model"
+scribes: "Tyler J. Brough"
+lecture-date: "02/19/2026"
+
+format:
+  pdf:
+    documentclass: article
+    papersize: letter
+    fontsize: 11pt
+    maketitle: false
+    number-sections: true
+    colorlinks: true
+    # Replicate ee290.sty margins (oddsidemargin=0pt, textwidth=6.5in)
+    geometry:
+      - top=1in
+      - bottom=1in
+      - left=1in
+      - right=1in
+    include-in-header:
+      text: |
+        % -------------------------------------------------------
+        % Packages (mirrors ee290.sty)
+        % -------------------------------------------------------
+        \usepackage{latexsym}
+        \usepackage{bbm}
+        \usepackage{amsmath}
+        \usepackage{amssymb}
+        \usepackage{amsthm}
+        \usepackage{amsfonts}
+        \usepackage{amsopn}
+        \usepackage{url}
+        \usepackage{tikz}
+        \usepackage{mdframed}
+        \surroundwithmdframed[linecolor=black, linewidth=1pt, innertopmargin=6pt, innerbottommargin=6pt]{definition}
+
+        % -------------------------------------------------------
+        % Lecture header box (mirrors \handout / \lecturetitle)
+        % -------------------------------------------------------
+        \newcommand{\handout}[5]{%
+          \noindent
+          \begin{center}
+          \framebox{\vbox{%
+            \hbox to 5.78in{{\bf DATA 5690/6690} \hfill #5}%
+            \vspace{4mm}%
+            \hbox to 5.78in{{\Large \hfill #2 \hfill}}%
+            \vspace{2mm}%
+            \hbox to 5.78in{{\it #3 \hfill #4}}%
+          }}%
+          \end{center}
+          \vspace*{4mm}%
+        }
+        \newcommand{\lecturetitle}[4]{%
+          \handout{#1}{#2}{Lecturer: Tyler J. Brough}{Scribe: #3}{Lecture #1 -- #4}%
+        }
+        \newcommand{\guestlecturetitle}[5]{%
+          \handout{#1}{#2}{Lecturer: #4}{Scribe: #3}{Lecture #1 -- #5}%
+        }
+
+        % -------------------------------------------------------
+        % Theorem-like environments — all share one counter
+        % -------------------------------------------------------
+        \newtheorem{theorem}{Theorem}
+        \newtheorem{corollary}[theorem]{Corollary}
+        \newtheorem{lemma}[theorem]{Lemma}
+        \newtheorem{observation}[theorem]{Observation}
+        \newtheorem{proposition}[theorem]{Proposition}
+        \newtheorem{definition}[theorem]{Definition}
+        \newtheorem{claim}[theorem]{Claim}
+        \newtheorem{fact}[theorem]{Fact}
+        \newtheorem{assumption}[theorem]{Assumption}
+
+        % -------------------------------------------------------
+        % Proof and remark environments
+        % -------------------------------------------------------
+        \renewenvironment{proof}{\noindent{\bf Proof}\hspace*{1em}}{\qed\bigskip\\}
+        \newenvironment{proof-sketch}{\noindent{\bf Sketch of Proof}\hspace*{1em}}{\qed\bigskip\\}
+        \newenvironment{proof-idea}{\noindent{\bf Proof Idea}\hspace*{1em}}{\qed\bigskip\\}
+        \newenvironment{proof-attempt}{\noindent{\bf Proof Attempt}\hspace*{1em}}{\qed\bigskip\\}
+        \newenvironment{remark}{\noindent{\bf Remark}\hspace*{1em}}{\bigskip}
+
+        % Example / exercise environments (share the theorem counter)
+        \newenvironment{example}%
+          {\refstepcounter{theorem}\noindent{\bf Example~\arabic{theorem}.}~}{}
+        \newenvironment{exercise}%
+          {\refstepcounter{theorem}\noindent{\bf Exercise~\arabic{theorem}.}~}{}
+
+        % -------------------------------------------------------
+        % Math macros (mirrors ee290.sty)
+        % -------------------------------------------------------
+        \newcommand{\field}[1]{\mathbb{#1}}
+        \newcommand{\N}{\field{N}}
+        \newcommand{\R}{\field{R}}
+        \newcommand{\Z}{\field{Z}}
+        \renewcommand{\Re}{\R}
+        \newcommand{\1}{{\bf 1}}
+        \newcommand{\I}[1]{\mathbb{I}_{\left\{#1\right\}}}
+        \DeclareMathOperator{\E}{E}
+        \DeclareMathOperator{\PR}{P}
+        \DeclareMathOperator{\subjectto}{subject\ to}
+        \newcommand{\norm}[1]{\left\|#1\right\|}
+        \newcommand{\card}[1]{\left|#1\right|}
+        \DeclareMathOperator*{\argmin}{arg\,min}
+        \DeclareMathOperator*{\argmax}{arg\,max}
+        \DeclareMathOperator*{\maximize}{maximize}
+        \DeclareMathOperator*{\minimize}{minimize}
+        \newcommand{\bigO}{O}
+        \newcommand{\set}[1]{\left\{#1\right\}}
+        \def\half{\frac{1}{2}}
+        \def\sizeof#1{\left|#1\right|}
+        \def\setof#1{\left\{#1\right\}}
+        \renewcommand{\Pr}[1]{\mbox{Pr}\left[#1\right]}
+        \newcommand{\Exp}[1]{\mbox{Exp}\left[#1\right]}
+
+  html:
+    theme: cosmo
+    css: scribe_styles.css
+    number-sections: true
+    html-math-method: mathjax
+    include-in-header:
+      text: |
+        <script>
+        window.MathJax = {
+          tex: {
+            macros: {
+              N: "\\mathbb{N}",
+              R: "\\mathbb{R}",
+              Z: "\\mathbb{Z}",
+              E: "\\operatorname{E}",
+              PR: "\\operatorname{P}",
+              norm: ["\\left\\|#1\\right\\|", 1],
+              card: ["\\left|#1\\right|", 1],
+              half: "\\tfrac{1}{2}",
+              argmin: "\\operatorname*{arg\\,min}",
+              argmax: "\\operatorname*{arg\\,max}",
+              set: ["\\left\\{#1\\right\\}", 1],
+              sizeof: ["\\left|#1\\right|", 1]
+            }
+          }
+        };
+        </script>
+
+execute:
+  echo: false
+  warning: false
+---
+
+<!-- ============================================================
+     LECTURE HEADER
+     Update the four arguments: {num}{title}{scribes}{date}
+     ============================================================ -->
+
+```{=latex}
+\lecturetitle{7}{Lecture 7: The Single-Period Binomial Option Pricing Model}{Tyler J. Brough}{02/19/2026}
+```
+
+::: {.content-visible when-format="html"}
+::: {.lecture-header}
+**DATA 5690/6690** [Lecture 7 -- 02/19/2026]{.lecture-ref}
+
+## Lecture 7: The Single-Period Binomial Option Pricing Model{.lecture-title .unnumbered}
+
+[*Lecturer: Tyler J. Brough*]{.lecturer} [*Scribe: Tyler J. Brough*]{.scribes}
+:::
+:::
+
+
+In this lecture we will cover the single-period binomial option pricing model. It is based upon McDonald Chapter 10. We will also introduce the concept of just-in-time (JIT) maths. We will sketch the basic elements of a probabilitistic model and use this as an overlay upon the economics of the model. The probability material comes mostly from Bersetkas and Tsitsiklis Chapter 1.2. 
+
+# The Elements of a Probabilitistic Model 
+
+- The ***sample space*** $\Omega$, which is the set of all possible *outcomes* of an ***experiment***. 
+
+- The ***probability law***, which assigns to a set $A$ of possible outcomes (also called an ***event***) a nonnegative number $P(A)$ (called the ***probability*** of $A$) that encodes our knowledge or belief about the collective "likelihood" of the elements of $A$. The probability law must satisfy certain properties to be introduced shortly.
+
+![The main concepts of a probabilistic model (Bertsekas & Tsitsiklis, Figure 1.2).](images/BT-Figure-1.2.png){fig-align="center" width=80%}
+
+
+# Introduction to the Single-Period Binomial Option Pricing Model 
+
+- The binomial option pricing model enables us to determine the price of an option, given the characteristics of the stock or other underlying asset
+
+- The binomial option pricing model assumes that the price of the underlying asset follows a binomial distribution -- that is, the asset price in each period can move only up or down by a specified amount
+
+- The binomial model is often referred to as the "Cox-Ross-Rubinstein pricing model" (CRR)
+
+
+## A Single-Period Binomial Tree 
+
+
+- **Example** 
+
+  - Consider a European call option on the stock of XYZ, with a $\$40$ strike and 1 year to expiration
+
+  - XYZ does not pay dividends, and its current price is $\$41$
+
+  - The continuously compounded risk-free interest rate is $8\%$
+
+  - The following figure depicts possible stock prices over 1 year, i.e., a binomial tree
+
+
+```{=latex}
+\vspace{1em}
+\begin{center}
+\tikzstyle{bag} = [text width=2em, text centered]
+\tikzstyle{end} = []
+\begin{tikzpicture}[sloped]
+  \node (a) at ( 0,0) [bag] {$\$41$};
+  \node (b) at ( 4,-1.5) [bag] {$\$60$};
+  \node (c) at ( 4,1.5) [bag] {$\$30$};
+  \draw [->] (a) to node [below] {} (b);
+  \draw [->] (a) to node [above] {} (c);
+\end{tikzpicture}
+\end{center}
+```
+
+
+## Computing the Option Price
+
+- Next, consider two portfolios
+  - Portfolio A: buy one call option
+  - Portfolio B: buy $2/3$ shares of XYZ and borrow $\$18.462$ at the risk-free rate
+
+- Costs
+  - Portfolio A: the call premium, which is unknown
+  - Portfolio B: $2/3 \times \$41 – \$18.462 = \$8.871$
+
+
+
+## Computing the Option Price (cont’d)
+
+- Payoffs:
+
+|                        | \$30    | \$60     |
+|------------------------|--------:|---------:|
+| **Portfolio A**        |         |          |
+| Payoff                 | \$0     | \$20     |
+| **Portfolio B**        |         |          |
+| 2/3 purchased shares   | \$20    | \$40     |
+| Repay loan of \$18.462 | −\$20   | −\$20    |
+| **Total payoff**       | **\$0** | **\$20** |
+
+
+## Computing the Option Price (cont’d)
+
+- Portfolios A and B have the same payoff. Therefore
+
+  - Portfolios A and B should have the same cost. Since Portfolio B costs $\$8.871$, the price of one option must be $\$8.871$
+
+  - There is a way to create the payoff to a call by buying shares and borrowing. Portfolio B is a ***synthetic call***
+
+  - One option has the risk of $2/3$ shares. The value $2/3$ is the delta ($\Delta$) of the option: the number of shares that replicates the option payoff
+
+
+
+## The Binomial Solution
+
+- How do we find a replicating portfolio consisting of $\Delta$ shares of stock and a dollar amount $B$ in lending, such that the portfolio imitates the option whether the stock rises or falls?
+
+  - Suppose that the stock has a continuous dividend yield of $\delta$, which is reinvested in the stock. Thus, if you buy one share at time $t$, at time $t+h$ you will have $e^{\delta h}$ shares
+
+  - If the length of a period is $h$, the interest factor per period is $e^{r h}$
+
+  - $uS$ denotes the stock price when the price goes up, and $dS$ denotes the stock price when the price goes down
+
+
+## The Binomial Solution (cont'd)
+
+```{=latex}
+\vspace{1em}
+\begin{center}
+\tikzstyle{bag} = [text width=3em, text centered]
+\tikzstyle{end} = []
+\begin{minipage}{0.45\textwidth}
+  \centering
+  \textbf{Stock Price}\\[0.5em]
+  \begin{tikzpicture}[sloped]
+    \node (a) at (0,0)    [bag] {$S$};
+    \node (b) at (4,-1.5) [bag] {$dS$};
+    \node (c) at (4, 1.5) [bag] {$uS$};
+    \draw [->] (a) to node [below] {} (b);
+    \draw [->] (a) to node [above] {} (c);
+  \end{tikzpicture}
+\end{minipage}%
+\hfill
+\begin{minipage}{0.45\textwidth}
+  \centering
+  \textbf{Option Payoff}\\[0.5em]
+  \begin{tikzpicture}[sloped]
+    \node (a) at (0,0)    [bag] {$C$};
+    \node (b) at (4,-1.5) [bag] {$C_{d}$};
+    \node (c) at (4, 1.5) [bag] {$C_{u}$};
+    \draw [->] (a) to node [below] {} (b);
+    \draw [->] (a) to node [above] {} (c);
+  \end{tikzpicture}
+\end{minipage}
+\end{center}
+```
+
+- Note that $u$ ($d$) in the stock price tree is interpreted as one plus the rate of capital gain (loss) on the stock if it goes up (down)
+
+
+## The Binomial Solution (cont'd)
+
+The value of the replicating portfolio at time $h$, with stock price $S_{h}$, is
+
+$$
+\Delta S_{h} e^{\delta h} + e^{r h} B
+$$
+
+**NB:** This is the ***no-arbitrage pricing equation*** based upon the concept of synthetic replication
+
+
+
+## The Binomial Solution (cont’d)
+
+- At the prices $S_{h} = uS$ and $S_{h} = dS$, a successful replicating portfolio will satisfy
+
+$$
+\begin{aligned}
+(\Delta \times uS \times e^{\delta h}) + (B \times e^{r h}) & = C_{u} \\
+(\Delta \times dS \times e^{\delta h}) + (B \times e^{r h}) & = C_{d}
+\end{aligned}
+$$
+
+- Solving for $\Delta$ and $B$ gives 
+
+$$
+\begin{aligned}
+\Delta &= e^{-\delta h} \left(\frac{C_{u} - C_{d}}{S(u - d)}\right) \\
+B &= e^{-r h} \left(\frac{uC_{d} - dC_{u}}{u - d}\right)
+\end{aligned}
+$$
+
+
+## The Binomial Solution (cont’d)
+
+- The cost of creating the option is the net cash flow required to buy the shares and bonds. Thus, the cost of the option is $\Delta S + B$
+
+$$
+\Delta S + B = e^{-r h} \left(C_{u} \frac{e^{(r - \delta) h} - d}{u - d} + C_{d} \frac{u - e^{(r - \delta) h}}{u - d}\right)
+$$
+
+- The no-arbitrage condition is
+
+$$
+u > e^{(r - \delta) h} > d
+$$
+
+# Notes on Probability Models for the Single-Period Binomial Option Pricing Model
+
+- The ***probability law*** that drives the single-period model is the binomial stock price tree 
+
+- **Note:** there is an important difference between statistical studies for which: 
+  - The researcher exercises ***experimental control***
+  - and ***observational studies*** when they do not. 
+  - Which is relevant for the financial econometrician?
+
+* **Note:** the very language of the above assumes experimental control. 
+  - By whom? Surely not the financial econometrician in this case!?! Well ...
+
+## Sargent's Triad 
+
+> *"[W]ithin the typical rational expectations model.... [t]here is a communism of models. All agents inside the model, the econometrician, and God share the same model."* 
+
+> *"From a practical perspective, an important property of a rational expectations model is that it imposes a communism of models and expectations. If we define a model as a probability distribution over a sequence of outcomes, possibly indexed by a parameter vector, a rational expectations equilibrium asserts that the same model is shared by (1) all of the agents within the model, (2) the econometrician estimating the model, and (3) nature, also known as the data generating mechanism. Different agents might have different information, but they form forecasts by computing conditional expectations with respect to a common joint density, that is, a common model. Communism of models gives rational expectations much of its empirical power and underlies the cross-equation restrictions that are used by rational expectations econometrics to identify and estimate parameters."*
+
+* **Note:** An objective/frequentist ***probability law*** in a financial market imposes Sargent's communism of models. It is equivalent to assuming that the financail econometrician does exercise experimental control. Or at least God/Nature does but the financial econometrician knows the mind of God/Nature (i.e. the "true" model).  
+
+- Is this plausible? 
+
+
+# Notes on Synthetic Replication 
+
+- Both the synthetic replicating portfolio and the call option derive their probability laws from the underyling binomial tree: 
+
+
+```{=latex}
+\vspace{1em}
+\begin{center}
+\tikzstyle{bag} = [text centered]
+\tikzstyle{end} = []
+  \begin{tikzpicture}[sloped]
+    \node (a) at (0,0)    [bag] {$\$8.871$};
+    \node (b) at (4,-1.5) [bag] {$\$0$};
+    \node (c) at (4, 1.5) [bag] {$\$20$};
+    \draw [->] (a) to node [below] {} (b);
+    \draw [->] (a) to node [above] {} (c);
+  \end{tikzpicture}
+\end{center}
+```
+
+```{=latex}
+\vspace{1em}
+\begin{center}
+\tikzstyle{bag} = [text centered]
+\tikzstyle{end} = []
+  \begin{tikzpicture}[sloped]
+    \node (a) at (0,0)   [bag] {$C_{0}$};
+    \node (b) at (7,-2)  [bag] {$C_{d} = \max(30 - 40, 0) = \$0$};
+    \node (c) at (7, 2)  [bag] {$C_{u} = \max(60 - 40, 0) = \$20$};
+    \draw [->] (a) to node [below] {} (b);
+    \draw [->] (a) to node [above] {} (c);
+  \end{tikzpicture}
+\end{center}
+```
+
+- Because these two trees have the same payoffs at the terminal nodes by the ***law of one price*** we can enforce a ***no-arbitrage condition***.
+
+- Thus we can deduce that $C_{0} = \$8.871$ via the no-arbitrage logic. 
+
+- This is the basic logic of finance. If you understand this principle in this simple model then you will understand everything from here on out. Only the structure of the models will get more complex. The logic will remain this same basic way of thinking based upon ***synthetic replication*** and imposing ***no-arbitrage.*** 

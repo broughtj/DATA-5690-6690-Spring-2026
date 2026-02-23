@@ -1,0 +1,334 @@
+---
+# ============================================================
+# DATA 5690/6690 Scribe Notes — Quarto Template
+# Edit the four fields below for each new lecture.
+# ============================================================
+lecture-number: "3"
+lecture-title: "Lecture 3: Entropy, Relative Entropy, and Mutual Information"
+scribes: "Alon Devorah, David Hallac, Kevin Shutzberg"
+lecture-date: "01/13/2015"
+
+format:
+  pdf:
+    documentclass: article
+    papersize: letter
+    fontsize: 11pt
+    maketitle: false
+    number-sections: true
+    colorlinks: true
+    # Replicate ee290.sty margins (oddsidemargin=0pt, textwidth=6.5in)
+    geometry:
+      - top=1in
+      - bottom=1in
+      - left=1in
+      - right=1in
+    include-in-header:
+      text: |
+        % -------------------------------------------------------
+        % Packages (mirrors ee290.sty)
+        % -------------------------------------------------------
+        \usepackage{latexsym}
+        \usepackage{bbm}
+        \usepackage{amsmath}
+        \usepackage{amssymb}
+        \usepackage{amsthm}
+        \usepackage{amsfonts}
+        \usepackage{amsopn}
+        \usepackage{url}
+
+        % -------------------------------------------------------
+        % Lecture header box (mirrors \handout / \lecturetitle)
+        % -------------------------------------------------------
+        \newcommand{\handout}[5]{%
+          \noindent
+          \begin{center}
+          \framebox{\vbox{%
+            \hbox to 5.78in{{\bf DATA 5690/6690} \hfill #5}%
+            \vspace{4mm}%
+            \hbox to 5.78in{{\Large \hfill #2 \hfill}}%
+            \vspace{2mm}%
+            \hbox to 5.78in{{\it #3 \hfill #4}}%
+          }}%
+          \end{center}
+          \vspace*{4mm}%
+        }
+        \newcommand{\lecturetitle}[4]{%
+          \handout{#1}{#2}{Lecturer: Jiantao Jiao}{Scribe: #3}{Lecture #1 -- #4}%
+        }
+        \newcommand{\guestlecturetitle}[5]{%
+          \handout{#1}{#2}{Lecturer: #4}{Scribe: #3}{Lecture #1 -- #5}%
+        }
+
+        % -------------------------------------------------------
+        % Theorem-like environments — all share one counter
+        % -------------------------------------------------------
+        \newtheorem{theorem}{Theorem}
+        \newtheorem{corollary}[theorem]{Corollary}
+        \newtheorem{lemma}[theorem]{Lemma}
+        \newtheorem{observation}[theorem]{Observation}
+        \newtheorem{proposition}[theorem]{Proposition}
+        \newtheorem{definition}[theorem]{Definition}
+        \newtheorem{claim}[theorem]{Claim}
+        \newtheorem{fact}[theorem]{Fact}
+        \newtheorem{assumption}[theorem]{Assumption}
+
+        % -------------------------------------------------------
+        % Proof and remark environments
+        % -------------------------------------------------------
+        \renewenvironment{proof}{\noindent{\bf Proof}\hspace*{1em}}{\qed\bigskip\\}
+        \newenvironment{proof-sketch}{\noindent{\bf Sketch of Proof}\hspace*{1em}}{\qed\bigskip\\}
+        \newenvironment{proof-idea}{\noindent{\bf Proof Idea}\hspace*{1em}}{\qed\bigskip\\}
+        \newenvironment{proof-attempt}{\noindent{\bf Proof Attempt}\hspace*{1em}}{\qed\bigskip\\}
+        \newenvironment{remark}{\noindent{\bf Remark}\hspace*{1em}}{\bigskip}
+
+        % Example / exercise environments (share the theorem counter)
+        \newenvironment{example}%
+          {\refstepcounter{theorem}\noindent{\bf Example~\arabic{theorem}.}~}{}
+        \newenvironment{exercise}%
+          {\refstepcounter{theorem}\noindent{\bf Exercise~\arabic{theorem}.}~}{}
+
+        % -------------------------------------------------------
+        % Math macros (mirrors ee290.sty)
+        % -------------------------------------------------------
+        \newcommand{\field}[1]{\mathbb{#1}}
+        \newcommand{\N}{\field{N}}
+        \newcommand{\R}{\field{R}}
+        \newcommand{\Z}{\field{Z}}
+        \renewcommand{\Re}{\R}
+        \newcommand{\1}{{\bf 1}}
+        \newcommand{\I}[1]{\mathbb{I}_{\left\{#1\right\}}}
+        \DeclareMathOperator{\E}{E}
+        \DeclareMathOperator{\PR}{P}
+        \DeclareMathOperator{\subjectto}{subject\ to}
+        \newcommand{\norm}[1]{\left\|#1\right\|}
+        \newcommand{\card}[1]{\left|#1\right|}
+        \DeclareMathOperator*{\argmin}{arg\,min}
+        \DeclareMathOperator*{\argmax}{arg\,max}
+        \DeclareMathOperator*{\maximize}{maximize}
+        \DeclareMathOperator*{\minimize}{minimize}
+        \newcommand{\bigO}{O}
+        \newcommand{\set}[1]{\left\{#1\right\}}
+        \def\half{\frac{1}{2}}
+        \def\sizeof#1{\left|#1\right|}
+        \def\setof#1{\left\{#1\right\}}
+        \renewcommand{\Pr}[1]{\mbox{Pr}\left[#1\right]}
+        \newcommand{\Exp}[1]{\mbox{Exp}\left[#1\right]}
+
+  html:
+    theme: cosmo
+    css: scribe_styles.css
+    number-sections: true
+    html-math-method: mathjax
+    include-in-header:
+      text: |
+        <script>
+        window.MathJax = {
+          tex: {
+            macros: {
+              N: "\\mathbb{N}",
+              R: "\\mathbb{R}",
+              Z: "\\mathbb{Z}",
+              E: "\\operatorname{E}",
+              PR: "\\operatorname{P}",
+              norm: ["\\left\\|#1\\right\\|", 1],
+              card: ["\\left|#1\\right|", 1],
+              half: "\\tfrac{1}{2}",
+              argmin: "\\operatorname*{arg\\,min}",
+              argmax: "\\operatorname*{arg\\,max}",
+              set: ["\\left\\{#1\\right\\}", 1],
+              sizeof: ["\\left|#1\\right|", 1]
+            }
+          }
+        };
+        </script>
+
+execute:
+  echo: false
+  warning: false
+---
+
+<!-- ============================================================
+     LECTURE HEADER
+     Update the four arguments: {num}{title}{scribes}{date}
+     ============================================================ -->
+
+```{=latex}
+\lecturetitle{3}{Lecture 3: Entropy, Relative Entropy, and Mutual Information}{Alon Devorah, David Hallac, Kevin Shutzberg}{01/13/2015}
+```
+
+::: {.content-visible when-format="html"}
+::: {.lecture-header}
+**DATA 5690/6690** [Lecture 3 -- 01/13/2015]{.lecture-ref}
+
+## Lecture 3: Entropy, Relative Entropy, and Mutual Information {.lecture-title .unnumbered}
+
+[*Lecturer: Jiantao Jiao*]{.lecturer} [*Scribe: Alon Devorah, David Hallac, Kevin Shutzberg*]{.scribes}
+:::
+:::
+
+In this lecture^[*Reading:* Chapter 2 of Cover and Thomas.], we will introduce certain key measures of information that play crucial roles in theoretical and operational characterizations throughout the course. These include the entropy, the mutual information, and the relative entropy. We will also exhibit some key properties exhibited by these information measures.
+
+# Notation
+
+A quick summary of the notation
+
+1. **Random Variables (objects):** used more "loosely", i.e. $X, Y, U, V$
+2. **Alphabets:** $\mathcal{X, Y, U, V}$
+3. **Specific Values:** $x, y, u, v$
+
+For a discrete random variable (object), $U$ has p.m.f: $P_U^{(u)} \triangleq P(U = u)$. Often, we'll just write $p(u)$. Similarly: $p(x,y)$ for $P_{X,Y}^{(x,y)}$ and $p(y|x)$ for $P_{Y|X}^{(y|x)}$, etc.
+
+# Entropy
+
+<!-- ============================================================
+     THEOREM-LIKE ENVIRONMENTS
+     For PDF: use raw LaTeX blocks as shown below.
+     For HTML: use the Quarto callout alternatives shown in
+     comments — or keep the raw LaTeX and accept PDF-only output.
+     ============================================================ -->
+
+```{=latex}
+\begin{definition}
+``Surprise Function'':
+\begin{align}
+  s(u) \triangleq \log \frac{1}{P_{U}^{(u)}}
+\end{align}
+\end{definition}
+```
+
+```{=latex}
+\begin{definition}
+\textbf{Entropy}: Let $U$ be a discrete R.V.\ taking values in $\mathcal{U}$.
+The \textbf{entropy} of $U$ is defined by:
+\begin{align}
+  H(U) \triangleq \sum_{u \in \mathcal{U}} P_U^{(u)} \cdot \log\!\left(\frac{1}{P_U^{(u)}}\right)
+  = \E\!\left[s(U)\right]
+\end{align}
+\end{definition}
+```
+
+**Note:** The entropy $H(U)$ is not a random variable. In fact it is not a function of the object $U$, but rather a functional (or property) of the underlying distribution $P_U^{(u)},\, u \in \mathcal{U}$. An analogy is $E[U]$, which is also a number (the mean) corresponding to the distribution.
+
+**Jensen's Inequality:** Let $Q$ denote a *convex* function, and $X$ denote any random variable. Jensen's inequality states that
+$$E[Q(X)] \geq Q(E[X]).$$
+Further, if $Q$ is strictly convex, equality holds iff $X$ is deterministic.
+
+*Example*: $Q(x) = e^x$ is a convex function. Therefore, for a random variable $X$, we have by Jensen's inequality:
+$$\mathbb{E}[e^X] \geq e^{\mathbb{E}[X]}$$
+
+## Properties of Entropy
+
+W.L.O.G suppose $\mathcal{U} = \{1, 2, \ldots, m\}$.
+
+1. $H(U) \leq \log m$, with equality iff $p(u) = \frac{1}{m}\ \forall\, u$ (i.e., uniform).
+
+```{=latex}
+\begin{proof}
+\begin{align}
+  H(U) &= \mathbb{E}\!\left[\log\frac{1}{P(U)}\right] \\
+       &\leq \log \mathbb{E}\!\left[\frac{1}{P(U)}\right]
+         \quad\text{(Jensen's inequality, since $\log$ is concave)} \\
+       &= \log \sum_u P(u) \cdot \frac{1}{P(u)} \\
+       &= \log m.
+\end{align}
+Equality in Jensen iff $\frac{1}{P(U)}$ is deterministic, iff $p(u) = \frac{1}{m}$.
+\end{proof}
+```
+
+2. $H(U) \geq 0$, with equality iff $U$ is deterministic.
+
+3. **Sub-additivity of entropy:**
+$$H(X, Y) \leq H(X) + H(Y),$$
+with equality iff $X \perp Y$.
+
+```{=latex}
+\begin{definition}
+\textbf{Relative Entropy.} An important measure of distance between probability measures is
+the relative entropy, or Kullback--Leibler divergence:
+\begin{equation}
+  D(p \| q) \triangleq \sum_{u \in \mathcal{U}} p(u) \log \frac{p(u)}{q(u)}
+  = \mathbb{E}\!\left[\log \frac{p(U)}{q(U)}\right]
+\end{equation}
+\end{definition}
+```
+
+```{=latex}
+\begin{definition}
+\textbf{Mutual Information between $X$ and $Y$.}
+\begin{align}
+  I(X; Y) &\triangleq H(X) + H(Y) - H(X, Y) \\
+           &= H(X) - H(X \mid Y) \\
+           &= D(P_{X,Y} \| P_X \times P_Y)
+\end{align}
+\end{definition}
+```
+
+<!-- ============================================================
+     FURTHER ENVIRONMENT EXAMPLES
+     Uncomment to use in your notes.
+     ============================================================
+
+```{=latex}
+\begin{theorem}[Chain Rule for Entropy]
+For random variables $X_1, \ldots, X_n$:
+\[
+  H(X_1, \ldots, X_n) = \sum_{i=1}^{n} H(X_i \mid X_1, \ldots, X_{i-1}).
+\]
+\end{theorem}
+```
+
+```{=latex}
+\begin{lemma}
+...
+\end{lemma}
+```
+
+```{=latex}
+\begin{corollary}
+...
+\end{corollary}
+```
+
+```{=latex}
+\begin{claim}
+...
+\end{claim}
+```
+
+```{=latex}
+\begin{fact}
+...
+\end{fact}
+```
+
+```{=latex}
+\begin{observation}
+...
+\end{observation}
+```
+
+```{=latex}
+\begin{assumption}
+...
+\end{assumption}
+```
+
+```{=latex}
+\begin{example}
+...
+\end{example}
+```
+
+```{=latex}
+\begin{remark}
+...
+\end{remark}
+```
+
+```{=latex}
+\begin{proof-sketch}
+...
+\end{proof-sketch}
+```
+
+-->

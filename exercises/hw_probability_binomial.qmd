@@ -1,0 +1,262 @@
+---
+title: "Homework: Probability Foundations for Option Pricing"
+subtitle: "One-Period Binomial Model — Prerequisite Review"
+author: "Tyler J. Brough"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    theme: cosmo
+    highlight-style: github
+  pdf:
+    toc: true
+    number-sections: true
+    geometry: margin=1in
+    fontsize: 11pt
+execute:
+  echo: true
+  warning: false
+---
+
+# Instructions
+
+This assignment reviews core concepts from **Appendix B** of Brandimarte (2006) that you will need when we study the one-period binomial option pricing model. Work through each problem carefully, showing all steps. Some problems ask for short written explanations; others require calculation or Julia code.
+
+**Due:** [insert date] | **Total Points:** 100
+
+---
+
+# Sample Space and Probability (20 pts)
+
+## Setting the Stage: A Stylized Stock Market
+
+In the one-period binomial model, a stock currently trading at $S_0$ can move to one of exactly **two** possible prices at time $T$:
+
+- **Up** state: $S_u = S_0 \cdot u$, where $u > 1$
+- **Down** state: $S_d = S_0 \cdot d$, where $0 < d < 1$
+
+::: {.callout-note}
+This two-outcome structure is precisely what makes the binomial model tractable — the sample space is as simple as it can be while still capturing the essential randomness of an asset price.
+:::
+
+**Problem 1.1** *(4 pts)*  
+Write down the sample space $S$ for the stock price at time $T$. Identify all possible events (subsets of $S$), and verify that the total number of events equals $2^{|S|}$.
+
+**Problem 1.2** *(4 pts)*  
+Let $p$ be the real-world (physical) probability that the stock goes up, so $P(\text{up}) = p$ and $P(\text{down}) = 1 - p$.
+
+(a) Verify that the three axioms of a probability measure (as defined in Appendix B.1) are satisfied.
+(b) Using the complement rule $P(E) + P(E^c) = 1$, confirm that the probabilities of the up and down states sum to one.
+
+**Problem 1.3** *(4 pts)*  
+Suppose $S_0 = 100$, $u = 1.10$, $d = 0.90$, and $p = 0.60$.
+
+(a) What is $P(S_T = 110)$?
+(b) What is $P(S_T \geq 100)$? What does this event represent economically?
+(c) What is $P(S_T = 95)$? Explain briefly.
+
+**Problem 1.4** *(8 pts)*  
+A European **call option** with strike $K$ pays $\max(S_T - K, 0)$ at time $T$. Define the event $A = \{S_T > K\}$ (the option expires in-the-money).
+
+(a) Using the parameters from Problem 1.3 with $K = 105$, identify which element(s) of the sample space belong to $A$.
+(b) Compute $P(A)$ and $P(A^c)$.
+(c) Are $A$ and $A^c$ mutually exclusive? Are they independent? Explain the difference between these two concepts using Appendix B.1.
+
+---
+
+# Discrete Random Variables and Expectation (25 pts)
+
+## The Stock Price as a Random Variable
+
+**Problem 2.1** *(5 pts)*  
+Define the stock price at time $T$ as a discrete random variable $X$.
+
+(a) Write out the probability mass function (PMF) $p(x_i) = P\{X = x_i\}$ for $X$ using the parameters $S_0 = 100$, $u = 1.10$, $d = 0.90$, $p = 0.60$.
+(b) Verify that $\sum_i p(x_i) = 1$.
+(c) Compute the cumulative distribution function $F(a) = P\{X \leq a\}$ and sketch (or describe) its shape. Why is it a step function?
+
+**Problem 2.2** *(6 pts)*  
+Compute the **expected value** $\mathrm{E}[X]$ of the stock price at time $T$.
+
+(a) Using the definition $\mathrm{E}[X] = \sum_i x_i p(x_i)$, calculate $\mathrm{E}[S_T]$.
+(b) Note that $\mathrm{E}[S_T] = S_0[p \cdot u + (1-p) \cdot d]$. Verify this formula gives the same answer.
+(c) What value of $p$ would make $\mathrm{E}[S_T] = S_0$? (This is called a **martingale condition** and will reappear when we discuss risk-neutral pricing.)
+
+**Problem 2.3** *(6 pts)*  
+Now consider the **call option payoff** $C_T = \max(S_T - K, 0)$ with $K = 105$.
+
+(a) Compute the payoff in each state of the world ($u$ and $d$).
+(b) Compute $\mathrm{E}[C_T]$ — the expected payoff of the call option under the physical probability $p$.
+(c) Using the linearity of expectation, verify that $\mathrm{E}[aS_T + b] = a\,\mathrm{E}[S_T] + b$ for constants of your choosing.
+
+**Problem 2.4** *(8 pts)*  
+**Jensen's Inequality in Option Pricing.** Appendix B.2 states that for a convex function $g$:
+$$\mathrm{E}[g(X)] \geq g(\mathrm{E}[X])$$
+
+(a) Show that $g(x) = \max(x - K, 0)$ is a convex function. (Hint: consider the second derivative, or argue geometrically.)
+(b) Using Jensen's inequality, show that $\mathrm{E}[C_T] \geq \max(\mathrm{E}[S_T] - K, 0)$.
+(c) Verify numerically with your parameters. What does this inequality imply about naively pricing an option as $\max(\mathrm{E}[S_T] - K, 0)$?
+
+---
+
+# Variance and the Role of Uncertainty (15 pts)
+
+**Problem 3.1** *(5 pts)*  
+Compute the **variance** of the stock price $\mathrm{Var}(S_T) = \mathrm{E}[S_T^2] - \mathrm{E}^2[S_T]$ using the parameters from Problem 2.1. Then compute the standard deviation $\sigma_{S_T}$.
+
+**Problem 3.2** *(5 pts)*  
+Consider a **standardized** version of the stock price, as in Example B.3 of the appendix:
+$$Z = \frac{S_T - \mathrm{E}[S_T]}{\sigma_{S_T}}$$
+
+(a) Compute $\mathrm{E}[Z]$ and $\mathrm{Var}(Z)$, verifying the results from Example B.3.
+(b) Using the property $\mathrm{Var}(aX + b) = a^2 \mathrm{Var}(X)$, confirm your answer algebraically.
+
+**Problem 3.3** *(5 pts)*  
+The variance of the stock price depends on $p$, $u$, and $d$.
+
+(a) Holding $S_0 = 100$, $u = 1.10$, $d = 0.90$ fixed, compute $\mathrm{Var}(S_T)$ for $p \in \{0.3, 0.5, 0.7\}$.
+(b) For which value of $p$ is the variance maximized? Prove your answer by treating $\mathrm{Var}(S_T)$ as a function of $p$ and differentiating.
+(c) What does this tell you intuitively about uncertainty in the stock price?
+
+---
+
+# The Risk-Neutral Probability (20 pts)
+
+One of the most powerful ideas in option pricing is to replace the real-world probability $p$ with a **risk-neutral probability** $q$, chosen so that the discounted stock price is a martingale. If the risk-free interest rate per period is $r$, the risk-neutral probability satisfies:
+
+$$S_0 = \frac{1}{1+r}\left[q \cdot S_u + (1-q) \cdot S_d\right]$$
+
+Solving for $q$:
+
+$$q = \frac{(1+r)S_0 - S_d}{S_u - S_d} = \frac{(1+r) - d}{u - d}$$
+
+**Problem 4.1** *(5 pts)*  
+Using $S_0 = 100$, $u = 1.10$, $d = 0.90$, and $r = 0.05$:
+
+(a) Compute the risk-neutral probability $q$.
+(b) Verify that $q$ satisfies all three axioms of a probability measure (i.e., $0 \leq q \leq 1$ and the probabilities sum to 1).
+(c) Show that under $q$, the expected stock price equals the forward price: $\mathrm{E}^q[S_T] = S_0(1+r)$.
+
+**Problem 4.2** *(5 pts)*  
+Compare the risk-neutral probability $q$ to the real-world probability $p = 0.60$.
+
+(a) Is $q > p$, $q = p$, or $q < p$? What does this relationship imply about how risk-neutral pricing "adjusts" for investor risk aversion?
+(b) The no-arbitrage condition requires $d < 1 + r < u$. Verify this holds with our parameters, and explain what would go wrong (economically) if it did not.
+
+**Problem 4.3** *(5 pts)*  
+Using the risk-neutral probability, the fair price of the call option today is:
+$$C_0 = \frac{1}{1+r}\,\mathrm{E}^q[C_T] = \frac{1}{1+r}\left[q \cdot \max(S_u - K, 0) + (1-q)\cdot\max(S_d - K,0)\right]$$
+
+With $K = 105$:
+
+(a) Compute $C_0$ using the risk-neutral probability $q$ from Problem 4.1.
+(b) Compute the "naive" price $\max(\mathrm{E}^p[S_T] - K, 0)/(1+r)$ using the real-world probability $p$. How does it compare to $C_0$?
+(c) Why is it **incorrect** to price the option by discounting the expected payoff under the real-world probability $p$?
+
+**Problem 4.4** *(5 pts)*  
+The conditional expectation introduced in Appendix B.4 is central to multi-period pricing. Suppose we extend to a **two-period** model (a preview):
+
+Let $V_T$ be the option payoff at period $T = 2$. The price at period $t = 1$ in the "up" node is $V_u = \mathrm{E}^q[V_T \mid S_1 = S_u]/(1+r)$. Using the law of iterated expectations (Equation B.1 in the appendix):
+$$\mathrm{E}^q[V_T] = \mathrm{E}^q\left[\mathrm{E}^q[V_T \mid S_1]\right]$$
+
+(a) Explain in your own words what this equation means in the context of option pricing: why does "pricing backwards" through the tree give the same answer as pricing directly?
+(b) Does this rely on any assumptions about independence? What role does the Markov property play?
+
+---
+
+# Computational Exercise (20 pts)
+
+Complete the following in Julia. Include your code and output.
+
+**Problem 5.1** *(8 pts)*  
+Write a function `binomial_call(S0, u, d, r, K, p)` that:
+
+(a) Computes the up and down stock prices $S_u$ and $S_d$.
+(b) Computes the option payoffs in each state.
+(c) Computes the risk-neutral probability $q$.
+(d) Returns the risk-neutral price $C_0$.
+
+Test your function with the parameters from Problem 4.3 and confirm it matches your hand calculation.
+
+```julia
+# Starter code (Julia)
+function binomial_call(S0, u, d, r, K, p)
+    # Step 1: Stock prices at expiry
+    Su = S0 * u
+    Sd = S0 * d
+
+    # Step 2: Option payoffs
+    Cu = max(Su - K, 0)
+    Cd = max(Sd - K, 0)
+
+    # Step 3: Risk-neutral probability
+    q = ((1 + r) - d) / (u - d)
+
+    # Step 4: Risk-neutral price
+    C0 = (1 / (1 + r)) * (q * Cu + (1 - q) * Cd)
+    return C0
+end
+```
+
+**Problem 5.2** *(6 pts)*  
+Using your function, perform a **sensitivity analysis** on the call price $C_0$. Use `Plots.jl` (or `Makie.jl`) for all plots.
+
+(a) Fix $S_0 = 100$, $d = 0.90$, $r = 0.05$, $K = 105$, $p = 0.60$. Plot $C_0$ as a function of $u \in [1.01, 1.30]$.
+(b) Fix $S_0 = 100$, $u = 1.10$, $d = 0.90$, $p = 0.60$. Plot $C_0$ as a function of $K \in [90, 120]$.
+(c) Describe in words what each plot reveals about how option prices behave.
+
+**Problem 5.3** *(6 pts)*  
+Reproduce Example B.5 from the appendix in Julia using the `Distributions.jl` package: compute the probability that a standard normal variable lies within $(-2, 2)$ and within $(-3, 3)$. Then:
+
+(a) Interpret these numbers in the context of stock returns: if log-returns are normally distributed, what fraction of days would you expect the return to fall within $\pm 2\sigma$?
+(b) The appendix notes that "the normal distribution is a debatable model for asset returns, as in practice these exhibit fat tails." Briefly explain what fat tails mean and why they matter for option pricing.
+
+```julia
+# Reproduce Example B.5 (Julia)
+using Distributions
+
+Z = Normal(0, 1)
+
+prob_2sigma = cdf(Z, 2) - cdf(Z, -2)
+println("P(-2 ≤ Z ≤ 2) = ", round(prob_2sigma, digits=4))
+
+prob_3sigma = cdf(Z, 3) - cdf(Z, -3)
+println("P(-3 ≤ Z ≤ 3) = ", round(prob_3sigma, digits=4))
+```
+
+---
+
+# Reflection Questions (Bonus, up to 5 pts)
+
+**Bonus 6.1**  
+The risk-neutral probability $q$ does not depend on the real-world probability $p$ at all. Does this seem strange to you? Write 3–4 sentences explaining why this is actually sensible from a no-arbitrage perspective.
+
+**Bonus 6.2**  
+Appendix B.2 introduces the **lognormal distribution** as the limit of a product of random variables. The Black-Scholes model assumes that the stock price at time $T$ is lognormally distributed. How does this connect to the binomial model as the number of periods $n \to \infty$? (You do not need to prove anything — a conceptual explanation is sufficient.)
+
+---
+
+# Summary of Key Formulas
+
+For your reference, the following formulas from Appendix B are most directly relevant to this assignment:
+
+| Concept | Formula |
+|---|---|
+| Probability axioms | $0 \leq P(E) \leq 1$; $P(S) = 1$; countable additivity |
+| Complement rule | $P(E) + P(E^c) = 1$ |
+| Conditional probability | $P(E \mid F) = P(EF)/P(F)$ |
+| Independence | $P(EF) = P(E)P(F)$ |
+| Expected value (discrete) | $\mathrm{E}[X] = \sum_i x_i p(x_i)$ |
+| Linearity of expectation | $\mathrm{E}[aX + b] = a\,\mathrm{E}[X] + b$ |
+| Jensen's inequality | $\mathrm{E}[g(X)] \geq g(\mathrm{E}[X])$ for convex $g$ |
+| Variance | $\mathrm{Var}(X) = \mathrm{E}[X^2] - \mathrm{E}^2[X]$ |
+| Variance scaling | $\mathrm{Var}(aX+b) = a^2\,\mathrm{Var}(X)$ |
+| Law of iterated expectations | $\mathrm{E}[X] = \mathrm{E}[\mathrm{E}[X \mid Y]]$ |
+
+: Key probability formulas from Brandimarte Appendix B {tbl-colwidths="[35,65]"}
+
+---
+
+*Based on: Brandimarte, P. (2006). Numerical Methods in Finance and Economics: A MATLAB-Based Introduction (2nd ed.). Wiley. Computational exercises use Julia.*

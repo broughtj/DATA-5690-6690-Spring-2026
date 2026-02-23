@@ -1,0 +1,104 @@
+/* ============================================================
+   DATA 5690/6690 Scribe Notes — HTML Stylesheet
+   Mirrors the visual style of the LaTeX template.
+   ============================================================ */
+
+/* Body / page */
+body {
+  font-family: "Computer Modern", "Latin Modern", Georgia, serif;
+  font-size: 11pt;
+  max-width: 6.5in;
+  margin: 1in auto;
+  line-height: 1.5;
+  color: #000;
+}
+
+/* ---- Lecture header box ---- */
+.lecture-header {
+  border: 1.5px solid #000;
+  padding: 8px 12px;
+  margin-bottom: 1.5em;
+  font-size: 1em;
+}
+
+.lecture-header > p:first-child {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  margin: 0 0 6px 0;
+  border-bottom: none;
+}
+
+.lecture-ref {
+  font-weight: normal;
+}
+
+.lecture-header .lecture-title {
+  text-align: center;
+  font-size: 1.5em;
+  font-weight: normal;
+  margin: 6px 0;
+  border-bottom: none;
+}
+
+.lecture-header > p:last-child {
+  display: flex;
+  justify-content: space-between;
+  font-style: italic;
+  margin: 6px 0 0 0;
+}
+
+/* ---- Theorem-like callout boxes ---- */
+/* (Used when raw LaTeX environments are replaced with Quarto callouts
+   for HTML-compatible output.) */
+
+.theorem, .definition, .lemma, .corollary,
+.proposition, .claim, .fact, .assumption, .observation {
+  border-left: 3px solid #333;
+  padding: 0.4em 0.8em;
+  margin: 1em 0;
+  background: #fafafa;
+}
+
+.theorem::before   { content: "Theorem.";   font-weight: bold; }
+.definition::before{ content: "Definition.";font-weight: bold; }
+.lemma::before     { content: "Lemma.";     font-weight: bold; }
+.corollary::before { content: "Corollary."; font-weight: bold; }
+.proposition::before { content: "Proposition."; font-weight: bold; }
+.claim::before     { content: "Claim.";     font-weight: bold; }
+.fact::before      { content: "Fact.";      font-weight: bold; }
+.assumption::before{ content: "Assumption.";font-weight: bold; }
+.observation::before { content: "Observation."; font-weight: bold; }
+
+.proof {
+  margin: 0.5em 0 1em 0;
+}
+
+.proof::before {
+  content: "Proof. ";
+  font-weight: bold;
+}
+
+.proof::after {
+  content: " □";
+}
+
+.remark::before {
+  content: "Remark. ";
+  font-weight: bold;
+}
+
+/* ---- Sections ---- */
+h1.title { display: none; }   /* suppress Quarto's default title */
+
+h2, h3, h4 {
+  margin-top: 1.4em;
+}
+
+/* ---- Misc ---- */
+.footnotes {
+  font-size: 0.9em;
+  border-top: 1px solid #ccc;
+  margin-top: 2em;
+  padding-top: 0.5em;
+}
