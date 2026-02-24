@@ -6,11 +6,47 @@
 \usepackage{booktabs}
 \usepackage{hyperref}
 \usepackage{parskip}
+\setlength{\parskip}{8pt plus 2pt minus 1pt}
+\usepackage{mdframed}
 
-% Custom environments
-\theoremstyle{definition}
-\newtheorem{definition}{Definition}[section]
-\newtheorem{theorem}{Theorem}[section]
+% Global list spacing
+\setlist[itemize]{itemsep=4pt, parsep=2pt, topsep=6pt}
+\setlist[enumerate]{itemsep=4pt, parsep=2pt, topsep=6pt}
+
+% Boxed definition environment (matching reference style)
+\newmdenv[
+  linewidth=1.5pt,
+  linecolor=black,
+  innertopmargin=10pt,
+  innerbottommargin=10pt,
+  innerleftmargin=15pt,
+  innerrightmargin=15pt,
+  skipabove=14pt,
+  skipbelow=14pt
+]{defbox}
+
+\newcounter{definition}[section]
+\renewcommand{\thedefinition}{\thesection.\arabic{definition}}
+
+\newenvironment{definition}[1][]{%
+  \refstepcounter{definition}%
+  \begin{defbox}%
+  \textbf{\textit{Definition~\thedefinition\ifx&#1&\else\space (#1)\fi}}\\[6pt]%
+}{%
+  \end{defbox}%
+}
+
+% Boxed theorem environment
+\newcounter{theorem}[section]
+\renewcommand{\thetheorem}{\thesection.\arabic{theorem}}
+
+\newenvironment{theorem}[1][]{%
+  \refstepcounter{theorem}%
+  \begin{defbox}%
+  \textbf{\textit{Theorem~\thetheorem\ifx&#1&\else\space (#1)\fi}}\\[6pt]%
+}{%
+  \end{defbox}%
+}
 
 \title{Notes on Probability Theory for FinTech}
 \author{}
@@ -18,7 +54,12 @@
 
 \begin{document}
 
-\maketitle
+\textbf{Notes on Probability Theory for FinTech} \\
+\textbf{DATA 5690-6690: Computational Methods for FinTech} \\
+\textbf{Spring Semester 2026} \\
+\vspace{5mm}
+
+\bigskip
 
 %=====================================================================
 % SECTION 1: INTRODUCTION
@@ -34,9 +75,10 @@
 % SECTION 2: SAMPLE SPACES
 %=====================================================================
 \section{Sample Spaces}
+\vspace{6pt}
 
 \begin{definition}[Sample Space]
-  The set of all possible outcomes of an experiment is called the \emph{sample space}, denoted by $\Omega$. Note that one and only one of the possible outcomes will occur on any given trial of the experiment.
+The set of all possible outcomes of an experiment is called the \emph{sample space}, denoted by $\Omega$. Note that one and only one of the possible outcomes will occur on any given trial of the experiment.
 \end{definition}
 
 \begin{itemize}[leftmargin=*]
@@ -51,6 +93,7 @@
 % SECTION 3: EVENTS
 %=====================================================================
 \section{Events}
+\vspace{6pt}
 
 \begin{definition}[Event]
   An \emph{event} is a subset of the sample space $\Omega$. If $A$ is an event, then $A$ has occurred if it contains the outcome that occurred.
@@ -65,12 +108,14 @@
   An event is called an \emph{elementary event} if it contains exactly one outcome of the experiment.
 \end{definition}
 
+
 \begin{definition}[Mutually Exclusive Events]
   Two events $A$ and $B$ are called \emph{mutually exclusive} if
   \[
     A \cap B = \varnothing.
   \]
 \end{definition}
+
 
 \begin{definition}[Pairwise Mutually Exclusive Events]
   Events $A_1, A_2, A_3, \ldots$ are said to be \emph{mutually exclusive} if they are pairwise mutually exclusive. That is, if
@@ -135,6 +180,7 @@ Mathematically, we can think of $P(A)$ as a set function. In other words, it is 
 % SECTION 6: RANDOM VARIABLES
 %=====================================================================
 \section{Random Variables}
+\vspace{6pt}
 
 \begin{definition}[Random Variable]
   A \emph{random variable}, say $X$, is a function defined over a sample space, $\Omega$, that associates a real number, $X(e) = x$, with each possible outcome $e$ in $\Omega$.
@@ -160,6 +206,7 @@ We will denote random variables with capital letters like $X$, $Y$, $Z$.
 % SECTION 7: CUMULATIVE DISTRIBUTION FUNCTION
 %=====================================================================
 \section{Cumulative Distribution Function (CDF)}
+\vspace{6pt}
 
 \begin{definition}[Cumulative Distribution Function (CDF)]
   The cumulative distribution function (CDF) of a random variable $X$ is defined for any real $x$ by
@@ -191,6 +238,7 @@ where the summation is taken over all indices $i$ such that $x_i \leq x$.
 % SECTION 8: EXPECTED VALUE (DISCRETE)
 %=====================================================================
 \section{Expected Value}
+\vspace{6pt}
 
 \begin{definition}[Expected Value (Discrete)]
   If $X$ is a discrete random variable with pdf $f(x)$, then the \emph{expected value} of $X$ is defined by
@@ -208,6 +256,7 @@ where the summation is taken over all indices $i$ such that $x_i \leq x$.
 % SECTION 9: CONTINUOUS RANDOM VARIABLES
 %=====================================================================
 \section{Continuous Random Variables}
+\vspace{6pt}
 
 \begin{definition}[Continuous Random Variable]
   A random variable $X$ is called a \emph{continuous random variable} if there is a function $f(x)$, called the \emph{probability density function} (pdf) of $X$, such that the CDF can be represented as
@@ -215,6 +264,7 @@ where the summation is taken over all indices $i$ such that $x_i \leq x$.
     F(x) = \int_{-\infty}^{x} f(t)\,dt.
   \]
 \end{definition}
+
 
 \begin{definition}[Expected Value of a Continuous RV]
   If $X$ is a continuous random variable with pdf $f(x)$, then the expected value of $X$ is defined by
@@ -230,6 +280,7 @@ As before, we often call $E(X)$ the \emph{mean} or \emph{expectation}.
 % SECTION 10: PERCENTILE
 %=====================================================================
 \section{Percentile}
+\vspace{6pt}
 
 \begin{definition}[Percentile]
   If $0 < p < 1$, then a $100 \times p$th \emph{percentile} of the distribution of a continuous random variable $X$ is a solution $x_p$ to the equation
@@ -247,10 +298,12 @@ As before, we often call $E(X)$ the \emph{mean} or \emph{expectation}.
 % SECTION 11: MODE AND SYMMETRY
 %=====================================================================
 \section{Mode and Symmetry}
+\vspace{6pt}
 
 \begin{definition}[Mode]
   If the pdf has a unique maximum at $x = m_0$, say $\max f(x) = f(m_0)$, then $m_0$ is called the \emph{mode} of $X$.
 \end{definition}
+
 
 \begin{definition}[Symmetric Distribution]
   A distribution with pdf $f(x)$ is said to be \emph{symmetric about $c$} if
@@ -269,6 +322,7 @@ As before, we often call $E(X)$ the \emph{mean} or \emph{expectation}.
 % SECTION 12: VARIANCE AND MOMENTS
 %=====================================================================
 \section{Variance and Moments}
+\vspace{6pt}
 
 \begin{definition}[Variance]
   The \emph{variance} of a random variable $X$ is given by
