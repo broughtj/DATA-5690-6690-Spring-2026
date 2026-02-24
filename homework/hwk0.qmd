@@ -1,0 +1,48 @@
+---
+title: "Homework 0: The Single-Period Binomial Model"
+format: pdf
+---
+
+# Introduction 
+
+The purpose of this "homework" problem set is to help you master the single-period binomial option pricing model. It is important that you have facility with the model numerically and theoretically. 
+
+Please submit your answers in a Quarto document with Julia code using `motoro.jl`. 
+
+## Numerical Workout Problems 
+
+1. Please do the following from McDonald Chapter 10
+    - 10.1 - 10.15
+    - 10.20 - 10.23
+
+
+## Theoretical and Philosophical Problems 
+
+2. Draw the binomial tree for problem 10.20 above. 
+    - What is the probability law for this problem?
+    - What is the experiment being conducted? By whom? 
+    - What is the sample space for this problem?
+    - What is the probability mass function? 
+    - In what sense is the probability law a prediction model? 
+    - What is the empirical part of this problem?
+    - Does Tom Sargent's "communism of models" apply to this problem? Why or why not? Explain in depth. 
+
+
+3. Again using problem 10.20 above. 
+    - Outline the single-period option pricing model as a numerical algorithm. Carefully enumerate and label each of the steps.
+    - With your algorithm in place, please carefully explain the logic of no-arbitrage.
+    - What is a boundary condition? How and where does it apply in this model?
+    - What are the knowledge requirements for this no-arbitrage logic?
+    - Explain carefully the economic and probabilistic logic of the no-arbitrage pricing equation. How are they connected? 
+
+
+4. What are the two probability density (mass) functions of concern in the single-period binomial model?
+    - Explain both models carefully.
+    - How is the second concept of probability derived from the first? Why is it needed? 
+    - Explain carefully the economic and probabilistic logic of the risk-neutral pricing equation. What is its economic meaning? What are its probability foundations? Why is it useful?
+
+
+5. Carefully explain the logic of American option pricing using the single-period binomial option pricing model.
+    - Use both the no-arbitrage and risk-neutral pricing equations.
+    - Explain the American option pricing problem as an "optimal stopping" problem.
+
