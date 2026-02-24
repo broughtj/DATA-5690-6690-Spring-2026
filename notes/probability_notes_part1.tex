@@ -1,0 +1,348 @@
+\documentclass[11pt, letterpaper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{parskip}
+
+% Custom environments
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}{Theorem}[section]
+
+\title{Notes on Probability Theory for FinTech}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+%=====================================================================
+% SECTION 1: INTRODUCTION
+%=====================================================================
+\section{Introduction}
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Probability model.} A mathematical model for the study of nondeterministic situations.
+  \item The term \emph{stochastic} (derived from the Greek word \emph{stochos}, meaning ``guesses'') is sometimes used instead of the word \emph{probabilistic}.
+\end{itemize}
+
+%=====================================================================
+% SECTION 2: SAMPLE SPACES
+%=====================================================================
+\section{Sample Spaces}
+
+\begin{definition}[Sample Space]
+  The set of all possible outcomes of an experiment is called the \emph{sample space}, denoted by $\Omega$. Note that one and only one of the possible outcomes will occur on any given trial of the experiment.
+\end{definition}
+
+\begin{itemize}[leftmargin=*]
+  \item A sample space is said to be \textbf{finite} if it consists of a finite number of outcomes, say $\Omega = \{e_1, e_2, \ldots, e_N\}$, and is said to be \textbf{countably infinite} if its outcomes can be put into a one-to-one correspondence with the positive integers, say $\Omega = \{e_1, e_2, \ldots\}$.
+\end{itemize}
+
+\begin{definition}[Discrete Sample Space]
+  If a sample space $\Omega$ is either finite or countably infinite, then it is called a \emph{discrete sample space}.
+\end{definition}
+
+%=====================================================================
+% SECTION 3: EVENTS
+%=====================================================================
+\section{Events}
+
+\begin{definition}[Event]
+  An \emph{event} is a subset of the sample space $\Omega$. If $A$ is an event, then $A$ has occurred if it contains the outcome that occurred.
+\end{definition}
+
+\begin{itemize}[leftmargin=*]
+  \item We will consider the whole sample space $\Omega$ as a special type of event, called the \emph{sure event}.
+  \item We will also include the empty set $\varnothing$ as an event, called the \emph{null event}.
+\end{itemize}
+
+\begin{definition}[Elementary Event]
+  An event is called an \emph{elementary event} if it contains exactly one outcome of the experiment.
+\end{definition}
+
+\begin{definition}[Mutually Exclusive Events]
+  Two events $A$ and $B$ are called \emph{mutually exclusive} if
+  \[
+    A \cap B = \varnothing.
+  \]
+\end{definition}
+
+\begin{definition}[Pairwise Mutually Exclusive Events]
+  Events $A_1, A_2, A_3, \ldots$ are said to be \emph{mutually exclusive} if they are pairwise mutually exclusive. That is, if
+  \[
+    A_i \cap A_j = \varnothing \quad \text{whenever } i \neq j.
+  \]
+\end{definition}
+
+%=====================================================================
+% SECTION 4: RELATIVE FREQUENCY AND STATISTICAL REGULARITY
+%=====================================================================
+\section{Relative Frequency and Statistical Regularity}
+
+\subsection*{Relative Frequency}
+
+If $m(A)$ represents the number of times that the event $A$ occurs among $M$ trials of a given experiment, then
+\[
+  f_A = \frac{m(A)}{M}
+\]
+represents the \emph{relative frequency} of occurrence of $A$ on those trials of the experiment.
+
+\subsection*{Statistical Regularity}
+
+If, for an event $A$, the limit of $f_A$ as $M$ approaches infinity exists, then one can assign probability to $A$ by
+\[
+  P(A) = \lim_{M \to \infty} f_A.
+\]
+This expresses a property known as \emph{statistical regularity}.
+
+\subsection*{Subjective Measure of Belief}
+
+\begin{itemize}[leftmargin=*]
+  \item Although the relative frequency approach may not always be adequate as a practical method of assigning probabilities, it is the way that probability usually is interpreted.
+  \item Many think this is too restrictive (or unnecessarily metaphysical).
+  \item By regarding probability as a \emph{subjective measure of belief} that an event will occur, they are willing to assign probability in any situation involving uncertainty without assuming properties such as repeatability or statistical regularity.
+\end{itemize}
+
+%=====================================================================
+% SECTION 5: DEFINITION OF PROBABILITY
+%=====================================================================
+\section{Definition of Probability}
+
+\subsection*{Probability as a Set Function}
+
+Mathematically, we can think of $P(A)$ as a set function. In other words, it is a function whose domain is a collection of sets (events), and the range of which is a subset of the real numbers.
+
+\begin{definition}[Probability]
+  For a given experiment, $\Omega$ denotes the sample space, and $A_1, A_{01}, A_{02}, \ldots$ represent possible events. A set function that associates a real value $P(A)$ with each event $A$ is called a \emph{probability set function}, and $P(A)$ is called the \emph{probability of $A$}, if the following properties are satisfied:
+  \begin{enumerate}
+    \item $0 \leq P(A)$ for every $A$.
+    \item $P(\Omega) = 1$.
+    \item $\displaystyle P\!\left(\bigcup_{i=1}^{\infty} A_i\right) = \sum_{i=1}^{\infty} P(A_i)$, \quad if $A_1, A_2, \ldots$ are pairwise mutually exclusive events.
+  \end{enumerate}
+\end{definition}
+
+\begin{itemize}[leftmargin=*]
+  \item These 3 properties are typically referred to as the \textbf{Probability Axioms}.
+  \item One consequence is that the probability of the null set is zero, or $P(\varnothing) = 0$.
+\end{itemize}
+
+%=====================================================================
+% SECTION 6: RANDOM VARIABLES
+%=====================================================================
+\section{Random Variables}
+
+\begin{definition}[Random Variable]
+  A \emph{random variable}, say $X$, is a function defined over a sample space, $\Omega$, that associates a real number, $X(e) = x$, with each possible outcome $e$ in $\Omega$.
+\end{definition}
+
+We will denote random variables with capital letters like $X$, $Y$, $Z$.
+
+\begin{definition}[Discrete Random Variable and Probability Density Function]
+  If the set of all possible values of a random variable $X$ is a countable set, $x_1, x_2, \ldots, x_n$, or $x_1, x_2, \ldots$, then $X$ is called a \emph{discrete random variable}. The function
+  \[
+    f(x) = P[X = x], \quad x = x_1, x_2, \ldots
+  \]
+  that assigns the probability to each possible value $x$ will be called the \emph{discrete probability density function} (discrete pdf).
+\end{definition}
+
+\begin{itemize}[leftmargin=*]
+  \item If it is clear from context that $X$ is discrete, then we will simply say \emph{pdf}.
+  \item Another common terminology is \emph{probability mass function} (pmf).
+  \item The possible values $x_i$ are called \emph{mass points}.
+\end{itemize}
+
+%=====================================================================
+% SECTION 7: CUMULATIVE DISTRIBUTION FUNCTION
+%=====================================================================
+\section{Cumulative Distribution Function (CDF)}
+
+\begin{definition}[Cumulative Distribution Function (CDF)]
+  The cumulative distribution function (CDF) of a random variable $X$ is defined for any real $x$ by
+  \[
+    F(x) = P[X \leq x].
+  \]
+\end{definition}
+
+\begin{itemize}[leftmargin=*]
+  \item The function $F(x)$ often is referred to simply as the \emph{distribution function} of $X$, and the subscripted notation $F_X(x)$ is sometimes used.
+  \item For brevity, it is common to use a short notation to indicate that a distribution of a particular form is appropriate.
+  \item If we write $X \sim f(x)$ or $X \sim F(x)$, this will indicate that the random variable $X$ has pdf $f(x)$ and CDF $F(x)$.
+\end{itemize}
+
+\begin{theorem}
+  Let $X$ be a discrete random variable with pdf $f(x)$ and CDF $F(x)$. If the possible values of $X$ are indexed in increasing order, $x_1 < x_2 < x_3 < \cdots$, then $f(x_i) = F(x_i)$, and for any $i > 1$,
+  \[
+    f(x_i) = F(x_i) - F(x_{i-1}).
+  \]
+\end{theorem}
+
+Furthermore, if $x < x_1$, then $F(x) = 0$, and for any other real $x$,
+\[
+  F(x) = \sum_{\substack{x_i \leq x}} f(x_i)
+\]
+where the summation is taken over all indices $i$ such that $x_i \leq x$.
+
+%=====================================================================
+% SECTION 8: EXPECTED VALUE (DISCRETE)
+%=====================================================================
+\section{Expected Value}
+
+\begin{definition}[Expected Value (Discrete)]
+  If $X$ is a discrete random variable with pdf $f(x)$, then the \emph{expected value} of $X$ is defined by
+  \[
+    E(X) = \sum_{x} x \, f(x).
+  \]
+\end{definition}
+
+\begin{itemize}[leftmargin=*]
+  \item Common notation for $E(X)$ is $\mu$ or $\mu_X$.
+  \item The terms \emph{mean} or \emph{expectation} are also used.
+\end{itemize}
+
+%=====================================================================
+% SECTION 9: CONTINUOUS RANDOM VARIABLES
+%=====================================================================
+\section{Continuous Random Variables}
+
+\begin{definition}[Continuous Random Variable]
+  A random variable $X$ is called a \emph{continuous random variable} if there is a function $f(x)$, called the \emph{probability density function} (pdf) of $X$, such that the CDF can be represented as
+  \[
+    F(x) = \int_{-\infty}^{x} f(t)\,dt.
+  \]
+\end{definition}
+
+\begin{definition}[Expected Value of a Continuous RV]
+  If $X$ is a continuous random variable with pdf $f(x)$, then the expected value of $X$ is defined by
+  \[
+    E(X) = \int_{-\infty}^{\infty} x\,f(x)\,dx
+  \]
+  if the integral in the equation is absolutely convergent. Otherwise we say that $E(X)$ does not exist.
+\end{definition}
+
+As before, we often call $E(X)$ the \emph{mean} or \emph{expectation}.
+
+%=====================================================================
+% SECTION 10: PERCENTILE
+%=====================================================================
+\section{Percentile}
+
+\begin{definition}[Percentile]
+  If $0 < p < 1$, then a $100 \times p$th \emph{percentile} of the distribution of a continuous random variable $X$ is a solution $x_p$ to the equation
+  \[
+    F(x_p) = p.
+  \]
+\end{definition}
+
+\begin{itemize}[leftmargin=*]
+  \item We can also think in terms of a proportion $p$, rather than a percentage $100 \cdot p$, of the population, and in this context $x_p$ is called a $p$th \emph{quantile} of the distribution.
+  \item A \emph{median} of the distribution of $X$ is the 50th percentile, denoted by $x_{0.5}$ or $m$.
+\end{itemize}
+
+%=====================================================================
+% SECTION 11: MODE AND SYMMETRY
+%=====================================================================
+\section{Mode and Symmetry}
+
+\begin{definition}[Mode]
+  If the pdf has a unique maximum at $x = m_0$, say $\max f(x) = f(m_0)$, then $m_0$ is called the \emph{mode} of $X$.
+\end{definition}
+
+\begin{definition}[Symmetric Distribution]
+  A distribution with pdf $f(x)$ is said to be \emph{symmetric about $c$} if
+  \[
+    f(c - x) = f(c + x) \quad \text{for all } x.
+  \]
+\end{definition}
+
+\begin{itemize}[leftmargin=*]
+  \item The graph of $y = f(x)$ is a ``mirror image'' about the vertical line $x = c$.
+  \item Asymmetric distributions are called \emph{skewed}.
+  \item If $f(x)$ is symmetric about $c$ and $\mu$ exists, then $c = \mu$. Additionally, if $f(x)$ has a unique maximum at $m_0$ and a unique median $m$, then $\mu = m_0 = m$.
+\end{itemize}
+
+%=====================================================================
+% SECTION 12: VARIANCE AND MOMENTS
+%=====================================================================
+\section{Variance and Moments}
+
+\begin{definition}[Variance]
+  The \emph{variance} of a random variable $X$ is given by
+  \[
+    \operatorname{Var}(X) = E\!\left[(X - \mu)^2\right].
+  \]
+\end{definition}
+
+Common notations for the variance are $\sigma^2$, $\sigma_X^2$, or $V(X)$.
+
+A related quantity, called the \emph{standard deviation} of $X$, is the positive square root of the variance:
+\[
+  \sigma = \sigma_X = \sqrt{\operatorname{Var}(X)}.
+\]
+
+\begin{definition}[$k$th Moment]
+  The $k$th moment about the origin of a random variable $X$ is
+  \[
+    \mu'_k = E(X^k),
+  \]
+  and the $k$th moment about the mean is
+  \[
+    \mu_k = E\!\left[X - E(X)\right]^k = E(X - \mu)^k.
+  \]
+\end{definition}
+
+%=====================================================================
+% SECTION 13: SPECIAL DISCRETE DISTRIBUTIONS
+%=====================================================================
+\section{Special Discrete Distributions}
+
+\subsection{Bernoulli Distribution}
+
+A \emph{Bernoulli random variable} is one that assumes only the values 0 or 1. The experiment with only the two outcomes 0 or 1 is called a \emph{Bernoulli trial}.
+
+If an experiment can result only in ``success'' ($E$) or ``failure'' ($E'$), then the corresponding Bernoulli random variable is
+\[
+  X(e) = \begin{cases} 1 & \text{if } e \in E, \\ 0 & \text{if } e \in E'. \end{cases}
+\]
+
+The pdf of $X$ is given by $f(0) = 1 - \theta$ and $f(1) = \theta$. The corresponding distribution is the \emph{Bernoulli distribution}, and its pdf can be expressed as
+\[
+  f(x) = \theta^x (1-\theta)^{1-x}, \quad x = 0, 1.
+\]
+
+\subsection{Binomial Distribution}
+
+A \emph{binomial experiment} can be constructed as a sequence of independent Bernoulli trials, where the quantity of interest is the number of successes on a certain number of trials.
+
+In a sequence of $n$ independent Bernoulli trials with probability $\theta$ (success) on each trial, let $X$ represent the number of successes. The discrete pdf of $X$ is given by
+\[
+  f(x;\,n,\theta) = \binom{n}{x} \theta^x (1-\theta)^{n-x}, \quad x = 0, 1, \ldots, n.
+\]
+
+The number of combinations of $n$ distinct objects chosen $r$ at a time is
+\[
+  \binom{n}{r} = \frac{n!}{r!\,(n-r)!}.
+\]
+This is called the \emph{binomial coefficient}. It is also related to \emph{Pascal's Triangle}.
+
+\subsubsection*{Summary of the Binomial Distribution}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{@{}llll@{}}
+  \toprule
+  \textbf{Distribution} & \textbf{pdf} $f(x)$ & \textbf{Mean} & \textbf{Variance} \\
+  \midrule
+  $X \sim \text{BIN}(n,\theta)$ & $\displaystyle\binom{n}{x}\theta^x(1-\theta)^{n-x}$ & $n\theta$ & $n\theta(1-\theta)$ \\[4pt]
+  $0 < \theta < 1$, \; $q = 1 - \theta$ & $x = 0, 1, \ldots, n$ & & \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Note:} The Bernoulli distribution is the Binomial distribution for $n = 1$.
+
+\end{document}
