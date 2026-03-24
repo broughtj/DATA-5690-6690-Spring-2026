@@ -1,0 +1,268 @@
+---
+title: "Chapter 18: The Lognormal Distribution"
+subtitle: "Key Concepts and Formulas"
+author: "Course Notes"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    highlight-style: github
+    math: mathjax
+  pdf:
+    toc: true
+    number-sections: true
+---
+
+## Overview
+
+This chapter motivates and develops the **lognormal distribution** as a model for asset prices. We begin with a review of the normal distribution, define lognormality, and then build a lognormal model of stock prices. The key payoff is understanding the probability calculations that underlie the Black-Scholes formula.
+
+---
+
+## The Normal Distribution
+
+### Definition
+
+A random variable $\tilde{x}$ is **normally distributed** if its probability density is:
+
+$$\phi(x;\, \mu, \sigma) \equiv \frac{1}{\sigma\sqrt{2\pi}}\, e^{-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2}$$
+
+We write $x \sim \mathcal{N}(\mu, \sigma^2)$. The distribution is fully described by its **mean** $\mu$ and **standard deviation** $\sigma$.
+
+The standard normal has $\mu = 0$, $\sigma = 1$, written $z \sim \mathcal{N}(0,1)$.
+
+### Cumulative Distribution Function
+
+The **cumulative normal distribution** $N(a)$ gives the probability that a standard normal draw is less than $a$:
+
+$$N(a) \equiv \int_{-\infty}^{a} \frac{1}{\sqrt{2\pi}}\, e^{-\frac{1}{2}x^2}\, dx = \Pr(z < a)$$
+
+Key symmetry property:
+
+$$N(-a) = 1 - N(a)$$
+
+So the probability of a draw between $-a$ and $+a$ is:
+$$\Pr(-a < z < a) = N(a) - N(-a) = 2N(a) - 1$$
+
+### Standardizing a Normal Variable
+
+If $x \sim \mathcal{N}(\mu, \sigma^2)$, convert to standard normal via:
+
+$$z = \frac{x - \mu}{\sigma}$$
+
+This allows probability calculations using $N(\cdot)$:
+
+$$\Pr(x < b) = N\!\left(\frac{b-\mu}{\sigma}\right), \qquad \Pr(x > b) = N\!\left(\frac{\mu - b}{\sigma}\right)$$
+
+To go the other direction — from a standard normal $z$ to an arbitrary normal — use:
+
+$$x = \mu + \sigma z$$
+
+### Sums of Normal Random Variables
+
+If $x_i \sim \mathcal{N}(\mu_i, \sigma_i^2)$ are jointly normally distributed with weights $\omega_i$, then their weighted sum is also normal:
+
+$$\sum_{i=1}^n \omega_i x_i \;\sim\; \mathcal{N}\!\left(\sum_{i=1}^n \omega_i \mu_i,\;\; \sum_{i=1}^n\sum_{j=1}^n \omega_i \omega_j \sigma_{ij}\right)$$
+
+where $\sigma_{ij} = \rho_{ij}\sigma_i\sigma_j$ is the covariance between $x_i$ and $x_j$.
+
+The normal distribution is **stable**: sums of jointly normal variables are normal.
+
+### The Central Limit Theorem
+
+The sum of $n$ independent, identically distributed random variables (with finite variance) approaches a normal distribution as $n \to \infty$. This is why continuously compounded returns — which sum daily shocks — are often treated as approximately normal.
+
+---
+
+## The Lognormal Distribution
+
+### Definition
+
+A random variable $y$ is **lognormally distributed** if $\ln(y)$ is normally distributed. Equivalently, if $x$ is normal then:
+
+$$y = e^x \quad \Longleftrightarrow \quad \ln(y) = x$$
+
+> **Key insight:** Because stock prices are created by exponentiation of returns, a lognormal stock price can *never be negative*.
+
+### Density Function
+
+If $\ln(y) \sim \mathcal{N}(m, v^2)$, the lognormal density is:
+
+$$g(y;\, m, v) \equiv \frac{1}{yv\sqrt{2\pi}}\, e^{-\frac{1}{2}\left(\frac{\ln(y)-m}{v}\right)^2}$$
+
+The distribution is **skewed to the right** and bounded below by zero.
+
+### Mean and Variance of a Lognormal Variable
+
+If $x \sim \mathcal{N}(m, v^2)$, then:
+
+$$\boxed{\mathrm{E}(e^x) = e^{m + \frac{1}{2}v^2}}$$
+
+$$\mathrm{Var}(e^x) = e^{2m+v^2}\!\left(e^{v^2} - 1\right)$$
+
+> **Jensen's Inequality:** Because the exponential function is convex, $\mathrm{E}(e^x) > e^{\mathrm{E}(x)}$. The mean of the exponentiated variable exceeds the exponent of the mean.
+
+### Products of Lognormals Are Lognormal
+
+Just as sums of normals are normal, **products of lognormals are lognormal**. If $x_1$ and $x_2$ are normal then $y_1 = e^{x_1}$ and $y_2 = e^{x_2}$ are lognormal, and:
+
+$$y_1 \times y_2 = e^{x_1 + x_2}$$
+
+Since $x_1 + x_2$ is normal, the product is lognormal.
+
+---
+
+## A Lognormal Model of Stock Prices
+
+### The Core Model
+
+Let $S_t$ be the stock price at time $t$, $S_0$ the current price, $\alpha$ the continuously compounded expected return, $\delta$ the continuous dividend yield, and $\sigma$ the volatility. The model assumes:
+
+$$\boxed{\ln(S_t/S_0) \;\sim\; \mathcal{N}\!\left[(\alpha - \delta - \tfrac{1}{2}\sigma^2)\,t,\;\; \sigma^2 t\right]}$$
+
+This is equivalent to writing:
+
+$$S_t = S_0\, e^{(\alpha - \delta - \frac{1}{2}\sigma^2)\,t\; +\; \sigma\sqrt{t}\,Z}, \quad Z \sim \mathcal{N}(0,1)$$
+
+### Why Subtract $\frac{1}{2}\sigma^2$?
+
+Using the lognormal expectation formula, the expected stock price works out to:
+
+$$\mathrm{E}(S_t) = S_0\, e^{(\alpha - \delta)\,t}$$
+
+Subtracting $\frac{1}{2}\sigma^2$ in the exponent ensures $\alpha - \delta$ retains its natural interpretation as the **continuously compounded expected rate of capital appreciation**. Without it, $\alpha$ would be harder to interpret directly.
+
+### Mean vs. Median
+
+| Quantity | Formula |
+|----------|---------|
+| **Expected (mean) price** | $\mathrm{E}(S_t) = S_0\, e^{(\alpha-\delta)t}$ |
+| **Median price** | $S_0\, e^{(\alpha - \delta - \frac{1}{2}\sigma^2)t}$ |
+
+The median is *below* the mean. In fact, more than 50% of the time a lognormally distributed stock will earn *below* its expected return. With large $\sigma$, a stock can lose money more than half the time even when the expected return is positive.
+
+### Returns Accumulate Over Time
+
+If returns are i.i.d., the continuously compounded return from $t_0$ to $t_2$ is simply additive:
+
+$$R(t_0, t_2) = R(t_0, t_1) + R(t_1, t_2)$$
+
+Consequently, both the mean and variance of continuously compounded returns scale proportionally with time:
+$$\mathrm{E}[R(0,T)] = n\alpha_h, \qquad \mathrm{Var}[R(0,T)] = n\sigma_h^2$$
+
+where $n$ is the number of sub-periods of length $h$.
+
+---
+
+## Lognormal Probability Calculations
+
+### Probability That $S_t < K$ or $S_t > K$
+
+$$\boxed{\Pr(S_t < K) = N(-\hat{d}_2)}$$
+
+$$\boxed{\Pr(S_t > K) = N(\hat{d}_2)}$$
+
+where:
+
+$$\hat{d}_2 = \frac{\ln(S_0/K) + (\alpha - \delta - \tfrac{1}{2}\sigma^2)\,t}{\sigma\sqrt{t}}$$
+
+> **Note:** $\hat{d}_2$ is the Black-Scholes $d_2$ (from equation 12.1) with the *actual* expected return $\alpha$ replacing the risk-free rate $r$. Substituting $r$ for $\alpha$ gives the **risk-neutral probabilities** used in Black-Scholes.
+
+### Lognormal Prediction Intervals
+
+To find a $100(1-p)\%$ prediction interval $[S_t^L,\, S_t^U]$ for $S_t$:
+
+$$S_t^L = S_0\, e^{(\alpha-\delta-\frac{1}{2}\sigma^2)t\;+\;\sigma\sqrt{t}\, N^{-1}(p/2)}$$
+
+$$S_t^U = S_0\, e^{(\alpha-\delta-\frac{1}{2}\sigma^2)t\;+\;\sigma\sqrt{t}\, N^{-1}(1-p/2)}$$
+
+For a 95% interval, use $N^{-1}(0.025) = -1.96$ and $N^{-1}(0.975) = 1.96$.
+
+### Conditional Expected Stock Price
+
+The expected stock price **given** the option expires in-the-money:
+
+$$\mathrm{E}(S_t \mid S_t < K) = S_0\, e^{(\alpha-\delta)t}\;\frac{N(-\hat{d}_1)}{N(-\hat{d}_2)}$$
+
+$$\mathrm{E}(S_t \mid S_t > K) = S_0\, e^{(\alpha-\delta)t}\;\frac{N(\hat{d}_1)}{N(\hat{d}_2)}$$
+
+where $\hat{d}_1 = \hat{d}_2 + \sigma\sqrt{t}$.
+
+### Connection to the Black-Scholes Formula
+
+Substituting $\alpha = r$ (risk-neutrality) into the conditional expectation formulas and discounting gives:
+
+$$C(S, K, \sigma, r, t, \delta) = e^{-\delta t} S\, N(d_1) - K e^{-rt} N(d_2)$$
+
+$$P(S, K, \sigma, r, t, \delta) = K e^{-rt} N(-d_2) - e^{-\delta t} S\, N(-d_1)$$
+
+The Black-Scholes formula is therefore a straightforward lognormal probability calculation under risk-neutral probabilities.
+
+---
+
+## Estimating the Parameters of a Lognormal Distribution
+
+### Procedure
+
+Given a price series observed at regular intervals of length $h$ (in years), compute the log returns:
+
+$$r_i = \ln(S_{t_i} / S_{t_{i-1}})$$
+
+These satisfy:
+
+$$\mathrm{E}[r_i] = (\alpha - \delta - \tfrac{1}{2}\sigma^2)\,h, \qquad \mathrm{Var}[r_i] = \sigma^2 h$$
+
+To estimate parameters from a sample of $n$ log returns with sample mean $\bar{r}$ and sample standard deviation $s$:
+
+| Parameter | Estimator |
+|-----------|----------|
+| **Annualized $\sigma$** | $\hat{\sigma} = s / \sqrt{h}$ |
+| **Annualized $\alpha$** | $\hat{\alpha} = \bar{r}/h + \hat{\delta} + \tfrac{1}{2}\hat{\sigma}^2$ |
+
+### Important Practical Notes
+
+- **Standard deviations are easier to estimate precisely than means.** The precision of $\hat{\sigma}$ improves with the *frequency* of observations (more data points help), while the precision of $\hat{\alpha}$ depends primarily on the *total length* of the time series — not the frequency.
+- With only a few years of data, the 95% confidence interval for an annualized mean return can easily span $\pm 25\%$ or more.
+- Using very high-frequency data (e.g., tick data) may introduce **bid-ask bounce** noise that artificially inflates variance estimates.
+
+---
+
+## How Are Asset Prices Distributed?
+
+The lognormal model assumes stock returns are i.i.d. normal. Empirical evidence suggests this is only an approximation.
+
+### Empirical Findings from Return Histograms
+
+- Actual return distributions display **excess kurtosis** (leptokurtosis): sharper peaks and **fat tails** compared to the normal distribution.
+- For the S&P 500 and IBM (2001–2011), daily return kurtosis was approximately **8–10** vs. the normal value of 3.
+- Weekly returns are closer to normal than daily returns, consistent with the Central Limit Theorem (weekly returns sum daily returns).
+
+### Possible Explanations for Non-Normality
+
+- **Jump processes:** Prices can jump discretely (addressed in later chapters).
+- **Stochastic volatility:** Variance changes over time. A "mixture of normals" (low and high volatility regimes) produces fat-tailed histograms even if returns are conditionally normal.
+
+### Normal Probability Plots
+
+A **normal probability plot** (Q-Q plot) compares the quantiles of the data to theoretical standard normal quantiles. If the data are normal, the points lie along a straight line.
+
+- **Curved pattern** → evidence against normality.
+- Real return data show too many extreme observations (points deviating from the line at both ends).
+
+---
+
+## Summary of Key Formulas
+
+| Formula | Description |
+|---------|-------------|
+| $\phi(x;\mu,\sigma) = \frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2}$ | Normal density |
+| $N(a) = \Pr(z < a)$, $N(-a) = 1 - N(a)$ | Cumulative normal & symmetry |
+| $z = (x-\mu)/\sigma$ | Standardization |
+| $\mathrm{E}(e^x) = e^{m + \frac{1}{2}v^2}$ | Mean of lognormal variable |
+| $\ln(S_t/S_0) \sim \mathcal{N}[(\alpha-\delta-\frac{1}{2}\sigma^2)t,\; \sigma^2 t]$ | Lognormal stock price model |
+| $\mathrm{E}(S_t) = S_0 e^{(\alpha-\delta)t}$ | Expected stock price |
+| $\Pr(S_t < K) = N(-\hat{d}_2)$ | Probability stock finishes below $K$ |
+| $\Pr(S_t > K) = N(\hat{d}_2)$ | Probability stock finishes above $K$ |
+| $\hat{\sigma} = s/\sqrt{h}$ | Annualized volatility estimate |

@@ -1,0 +1,312 @@
+---
+title: "Chapter 2: Elementary Statistics — A Review"
+subtitle: "Econometrics Course Notes"
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    theme: cosmo
+    highlight-style: tango
+  pdf:
+    toc: true
+    number-sections: true
+    geometry: margin=1in
+---
+
+## Overview
+
+This chapter reviews the core statistical concepts that underpin econometric analysis. The key topics are:
+
+- **Random variables** and their probability distributions
+- **Estimation** of population parameters from samples
+- **Desirable properties** of statistical estimators
+- **Key probability distributions** used in hypothesis testing
+- **Hypothesis testing** and confidence intervals
+
+---
+
+## Random Variables {#sec-random-variables}
+
+A **random variable** is a variable that takes on alternative values, each with a probability less than or equal to 1. The process generating those values is called a **probability distribution**.
+
+Two types of random variables:
+
+- **Discrete**: takes only a specific number of real values (e.g., outcome of a coin toss)
+- **Continuous**: can take any value on the real number line (e.g., income)
+
+For a continuous distribution, the probability that a value lies between two points equals the area under the density curve between those points.
+
+### Expected Values
+
+The **mean** (or **expected value**) of a random variable $X$, denoted $\mu_X$, is the probability-weighted average of all possible outcomes:
+
+$$
+\mu_X = E(X) = \sum_{i=1}^{N} p_i X_i \tag{2.1}
+$$
+
+The **variance** measures the spread of $X$ around its mean:
+
+$$
+\text{Var}(X) = \sigma_X^2 = \sum_{i=1}^{N} p_i [X_i - E(X)]^2 = E[X - E(X)]^2 \tag{2.2, 2.3}
+$$
+
+The **standard deviation** is the positive square root of the variance, $\sigma_X$.
+
+**Key properties of the expectations operator:**
+
+| Result | Formula |
+|--------|---------|
+| **Result 1** | $E(aX + b) = aE(X) + b$ |
+| **Result 2** | $E[(aX)^2] = a^2 E(X^2)$ |
+| **Result 3** | $\text{Var}(aX + b) = a^2 \text{Var}(X)$ |
+
+> **Note:** The *sample mean* $\bar{X}$ is the average of observed outcomes in a sample and is distinct from the population expected value $E(X)$.
+
+### Joint Distributions of Random Variables
+
+When studying two random variables $X$ and $Y$ together, we use their **joint distribution**, which lists the probabilities of all possible combined outcomes.
+
+The **covariance** measures the degree of *linear* association between $X$ and $Y$:
+
+$$
+\text{Cov}(X, Y) = E[(X - E(X))(Y - E(Y))] = \sum_{i=1}^{N}\sum_{j=1}^{N} p_{ij}(X_i - E(X))(Y_j - E(Y)) \tag{2.4}
+$$
+
+- Positive covariance → $X$ and $Y$ tend to move in the **same** direction
+- Negative covariance → $X$ and $Y$ tend to move in **opposite** directions
+
+The **correlation coefficient** is a scale-free version of covariance, always lying between $-1$ and $+1$:
+
+$$
+\rho(X, Y) = \frac{\text{Cov}(X, Y)}{\sigma_X \sigma_Y} \tag{2.5}
+$$
+
+**Additional expectations results for joint distributions:**
+
+| Result | Formula |
+|--------|---------|
+| **Result 4** | $E(X + Y) = E(X) + E(Y)$ |
+| **Result 5** | $\text{Var}(X + Y) = \text{Var}(X) + \text{Var}(Y) + 2\,\text{Cov}(X,Y)$ |
+
+### Independence and Correlation
+
+$X$ and $Y$ are **independent** if the probability of an outcome for $Y$ is unrelated to the outcome for $X$, and vice versa.
+
+| Result | Formula |
+|--------|---------|
+| **Result 6** | If $X \perp Y$: $E(XY) = E(X)E(Y)$ |
+| **Result 7** | If $X \perp Y$: $\text{Cov}(X, Y) = 0$ |
+
+> **Important caveat:** The reverse is *not* generally true. Zero covariance implies no *linear* dependence, but the variables may still be related nonlinearly.
+
+---
+
+## Estimation {#sec-estimation}
+
+### Estimators of Mean, Variance, and Covariance
+
+When we have only a **sample** (not the full population), we use **estimators** — rules that produce estimates from sample data.
+
+**Sample mean** (unbiased estimator of $\mu_X$):
+
+$$
+\bar{X} = \frac{1}{N} \sum_{i=1}^{N} X_i \tag{2.6}
+$$
+
+**Sample variance** (unbiased estimator of $\sigma_X^2$, dividing by $N-1$ for degrees of freedom):
+
+$$
+\widehat{\text{Var}}(X) = \frac{1}{N-1} \sum_{i=1}^{N} (X_i - \bar{X})^2 \tag{2.7}
+$$
+
+**Sample covariance** (unbiased estimator of $\text{Cov}(X,Y)$):
+
+$$
+\widehat{\text{Cov}}(X, Y) = \frac{1}{N-1} \sum_{i=1}^{N} (X_i - \bar{X})(Y_i - \bar{Y}) \tag{2.8}
+$$
+
+**Sample correlation coefficient:**
+
+$$
+r_{XY} = \frac{\sum_{i=1}^{N}(X_i - \bar{X})(Y_i - \bar{Y})}{\sqrt{\sum_{i=1}^{N}(X_i - \bar{X})^2 \sum_{i=1}^{N}(Y_i - \bar{Y})^2}} \tag{2.9}
+$$
+
+$r_{XY}$ ranges from $-1$ to $+1$ and is equivalent to $\widehat{\text{Cov}}(X,Y) \,/\, \sqrt{\widehat{\text{Var}}(X)\,\widehat{\text{Var}}(Y)}$.
+
+> **Key insight for regression:** The least-squares slope estimate equals the ratio of the sample covariance of $X$ and $Y$ to the sample variance of $X$:
+> $$\hat{\beta} = \frac{\widehat{\text{Cov}}(X,Y)}{\widehat{\text{Var}}(X)} = \frac{\sum x_i y_i}{\sum x_i^2} \tag{2.11}$$
+> where lowercase $x_i = X_i - \bar{X}$ and $y_i = Y_i - \bar{Y}$.
+
+### The Central Limit Theorem
+
+Because estimators like $\bar{X}$ vary across samples, they have their own **sampling distribution**. The Central Limit Theorem (CLT) describes this distribution for large samples:
+
+::: {.callout-important}
+**Central Limit Theorem:** If $X$ has mean $\mu$ and variance $\sigma^2$, then the sampling distribution of $\bar{X}$ becomes approximately **normal** with mean $\mu$ and variance $\sigma^2/N$ as $N$ increases.
+:::
+
+The CLT is why the normal distribution plays such a central role in statistical testing, even when the underlying data are not normally distributed.
+
+---
+
+## Desirable Properties of Estimators {#sec-properties}
+
+An estimator $\hat{\beta}$ is a rule for producing estimates of a true parameter $\beta$. Four key properties:
+
+### Lack of Bias
+
+$\hat{\beta}$ is **unbiased** if its expected value equals the true parameter:
+
+$$
+E(\hat{\beta}) = \beta \quad \Longleftrightarrow \quad \text{Bias} = E(\hat{\beta}) - \beta = 0
+$$
+
+An unbiased estimator is correct *on average* across many samples, though any single estimate may differ from the truth.
+
+### Efficiency
+
+Among all unbiased estimators, $\hat{\beta}$ is **efficient** if it has the smallest variance. A more efficient estimator produces estimates that are more tightly clustered around the true parameter, allowing stronger statistical statements.
+
+### Minimum Mean Square Error
+
+When bias and variance must be traded off, a useful criterion is **mean square error (MSE)**:
+
+$$
+\text{MSE}(\hat{\beta}) = E(\hat{\beta} - \beta)^2 = [\text{Bias}(\hat{\beta})]^2 + \text{Var}(\hat{\beta})
+$$
+
+When $\hat{\beta}$ is unbiased, MSE equals variance. Minimizing MSE is especially useful when a slightly biased estimator with very low variance outperforms an unbiased one with high variance.
+
+### Consistency
+
+$\hat{\beta}$ is **consistent** if it converges to the true parameter $\beta$ as the sample size $N \to \infty$. Formally, its **probability limit** equals $\beta$:
+
+$$
+\text{plim}\, \hat{\beta} = \beta
+$$
+
+Consistency is an *asymptotic* (large-sample) property. In practice, econometricians often prioritize consistency over unbiasedness for finite samples.
+
+---
+
+## Probability Distributions {#sec-distributions}
+
+Four distributions are essential for econometric hypothesis testing.
+
+### The Normal Distribution
+
+A continuous, bell-shaped distribution fully described by its mean $\mu_X$ and variance $\sigma_X^2$. Written $X \sim N(\mu_X, \sigma_X^2)$.
+
+Key probability intervals:
+
+$$
+\Pr(\mu_X - 1.96\sigma_X < X_i < \mu_X + 1.96\sigma_X) \approx 0.95 \tag{2.12}
+$$
+
+$$
+\Pr(\mu_X - 2.57\sigma_X < X_i < \mu_X + 2.57\sigma_X) \approx 0.99 \tag{2.13}
+$$
+
+The normal distribution is widely used because: (1) it is symmetric and fully described by mean and variance, and (2) by the CLT, sums and averages of random variables tend toward normality in large samples.
+
+**Result 10:** Any weighted sum of normally distributed variables with identical means and variances is also normally distributed.
+
+### Chi-Square Distribution ($\chi^2$)
+
+Used for testing hypotheses about **variances**.
+
+**Result 11:** The sum of the squares of $N$ independent standard normal variables ($\mu=0$, $\sigma^2=1$) follows a **chi-square distribution** with $N$ degrees of freedom.
+
+The chi-square distribution is right-skewed (starts at 0, extends to $+\infty$) and becomes more symmetric as degrees of freedom increase.
+
+Application: For a sample variance $s^2$ from $N$ normal observations, $(N-1)s^2/\sigma^2 \sim \chi^2_{N-1}$.
+
+### The $t$ Distribution
+
+Used when the **population variance is unknown**.
+
+**Result 12:** If $X \sim N(0,1)$ and $Z \sim \chi^2_N$ independently, then $X / \sqrt{Z/N} \sim t_N$ (a $t$ distribution with $N$ degrees of freedom).
+
+The $t$ distribution is symmetric like the normal but has **fatter tails**, especially for small samples. For $N \geq 30$ it closely approximates the normal. The key test statistic is:
+
+$$
+\frac{\bar{X} - \mu_X}{s_X / \sqrt{N}} \sim t_{N-1} \tag{2.14}
+$$
+
+where $s_X$ is the sample standard deviation.
+
+### The $F$ Distribution
+
+Used for testing **joint hypotheses** (e.g., that two or more regression parameters are simultaneously zero) and for comparing two variances.
+
+**Result 13:** If $X \sim \chi^2_{N_1}$ and $Z \sim \chi^2_{N_2}$ independently, then $(X/N_1)/(Z/N_2) \sim F_{N_1, N_2}$.
+
+The $F$ distribution is right-skewed, ranging from 0 to $+\infty$. It is characterized by two degrees-of-freedom parameters: $N_1$ (numerator) and $N_2$ (denominator).
+
+Application: To test whether two population variances are equal ($\sigma_X^2 = \sigma_Z^2$), compute $F = s_X^2 / s_Z^2$ (larger estimate in numerator).
+
+---
+
+## Hypothesis Testing and Confidence Intervals {#sec-testing}
+
+### Confidence Intervals
+
+A **confidence interval** gives a range of plausible values for a population parameter. A 95% confidence interval for $\mu_X$ (known variance) is:
+
+$$
+\bar{X} - \frac{1.96\,\sigma_X}{\sqrt{N}} \;\leq\; \mu_X \;\leq\; \bar{X} + \frac{1.96\,\sigma_X}{\sqrt{N}}
+$$
+
+When the variance is unknown, the $t$ distribution is used instead:
+
+$$
+\bar{X} \pm \frac{t_c \cdot s_X}{\sqrt{N}} \tag{2.15}
+$$
+
+where $t_c$ is the critical value from the $t$ table at the chosen significance level and degrees of freedom.
+
+**Interpretation:** If we were to draw many samples and construct the interval each time, 95% of those intervals would contain the true mean.
+
+### Null and Alternative Hypotheses
+
+Hypothesis testing centers on a **null hypothesis** $H_0$ and an **alternative hypothesis** $H_1$. For example:
+
+$$
+H_0: \beta = 0 \qquad H_1: \beta \neq 0
+$$
+
+We reject $H_0$ if the estimated parameter falls outside the confidence interval. The link between hypothesis testing and confidence intervals is direct: if the hypothesized value lies outside the 95% CI, we reject $H_0$ at the 5% significance level.
+
+**Two-tailed vs. one-tailed tests:** A two-tailed test allows $\beta$ to differ from zero in either direction. A one-tailed test is appropriate when theory suggests a specific direction for the effect.
+
+### Type I and Type II Errors
+
+| | $H_0$ is True | $H_0$ is False |
+|---|---|---|
+| **Reject $H_0$** | Type I Error ($\alpha$) | Correct (Power) |
+| **Fail to reject $H_0$** | Correct | Type II Error ($\beta$) |
+
+- **Type I error**: Incorrectly rejecting a true null hypothesis. Probability = significance level $\alpha$ (e.g., 0.05).
+- **Type II error**: Failing to reject a false null hypothesis.
+- **Trade-off**: Lowering $\alpha$ reduces Type I errors but increases Type II errors.
+
+### p-Values
+
+A **p-value** is the exact probability of observing a result as extreme as (or more extreme than) the one obtained, *assuming $H_0$ is true*.
+
+- Small p-value → data are surprising under $H_0$ → evidence against $H_0$
+- Large p-value → data are consistent with $H_0$ → no strong evidence to reject
+
+A p-value of 0.07 means the result is significant at the 7% level but *not* at the 5% level.
+
+### The Power of a Test
+
+**Power** is the probability of correctly rejecting a false null hypothesis:
+
+$$
+\text{Power} = 1 - \Pr(\text{Type II Error})
+$$
+
+Power increases with: (1) larger true effect size, and (2) larger sample size. A test that fails to reject $H_0$ may do so because $H_0$ is true, or simply because the test lacks sufficient power.
