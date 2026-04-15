@@ -1,0 +1,188 @@
+---
+title: "Final Exam: The Monte Carlo Perspective of Finnancial Technology"
+subtitle: "DATA 6690: Computational Methods in FinTech"
+bibliography: biblio.bib
+format:
+  html:
+    toc: true
+    code-fold: true
+    code-tools: true
+    theme: cosmo
+    highlight-style: github
+---
+
+# Introduction
+
+FinTech view of Monte Carlo methods. Monte Carlo perspective of FinTech.
+
+Guidelines: 
+
+- Use `Motoro.jl` wherever you can. 
+
+- Extend `Motoro.jl` and then use it wherever you need to! 
+
+- Create your own fork of `Motoro.jl` to use. 
+
+- The deliverable should be a Quarto notebook with embedded code and results.
+
+- The final "exam" will be a group oral exam. You will hand in your written responses first and then we will review them together at the whiteboard. 
+
+**Good luck!!!** 
+
+
+## Foundations 
+
+**1.** Price both a European call and a European put option using a $3$-period binomial tree drawn by hand. 
+
+a. Price the standard "McDonald" option: $S_{0} = \$41.0$, $K = \$40.0$, $r = 0.08$, $\sigma = 0.30$, and $\delta = 0.0$.
+
+b. Discuss the three sources of knowledge for the pricing logic behind the binomial option pricing model. What are the three sources? Discuss them in the context of @HayekEconomica1937.
+
+c. Compare and contrast the *no-arbitrage pricing equation* with the *risk-neutral pricing equation*. What is the core economic logic? Demonstrate that they are numerically equivalent. When do we want to use one versus the other?
+
+d. The probability foundations of neoclassical option pricing are somewhat complex and at times somewhat confusing. Discuss these foundations. Make sure to discuss the "physical" and "risk-neutral" distributions. What is meant by "equivalent" in this context? Why is this complexity necessary? How do the probability foundations relate to the economic concept of equilibrium?
+
+e. Using `Motoro.jl` demonstrate that you got the correct answers for the call and put above for $n = 3$.
+
+f. Again using `Motoro.jl` demonstrate the convergence of the binomial option pricing model to the Black-Scholes-Merton model by increasing the number of periods on the binomial tree. Use increments of $10$. By what number of periods does binomial approximate BSM to 6 decimal places? Interpret this result in the context of the law of large numbers.
+
+
+**2.** Now consider a $3$-period binomial tree for pricing an American put option. Use the same setup as above. 
+
+a. Discuss the logic of the *backwards recursion* solution method.
+
+b. Relate this to the *optimal stopping problem*.
+
+c. Compare the prices of the European and American put options. Is there a difference? Why?
+
+
+## From FinTech to Monte Carlo Methods 
+
+**3.** Assume $S_{0} = \$100$, $r = 0.05$, $\sigma = 0.25$, $\delta = 0$, and $T = 1$. Use Monte Carlo valuation to compute the price of a claim that pays $\$1$ if $S_{T} > \$100$, and $0$ otherwise. (This is called a *cash-or-nothing call* and is discussed further in McDonald Chapter 23. The actual price of this claim is $0.5040$.)
+
+a. Running 1000 simulations, what is the estimated price of the contract? How close is it to $\$0.5040$?
+
+b. What is the standard deviation of your Monte Carlo estimate? What is the $95\%$ confidence interval for your estimate?
+
+c. Use a $1$-year at-the-money call as a control variate and compute a price using equation $(19.9)$ in McDonald Chapter 19, setting $\beta = 1$. What is the standard deviation of your estimate?
+
+d. Again use a $1$-year at-the-money call as a control variate, only this time use equation $(19.9)$ and set $\beta$ optimally. What is the standard deviation of your estimate?
+
+
+**4.** Repeat the above problem using the following: 
+
+a. Naive Monte Carlo.
+
+b. Antithetic sampling.
+
+c. Stratified sampling.
+
+d. Antithetic + stratified sampling.
+
+e. Control variate sampling (optimal).
+
+f. Antithetic + control variate (optimal).
+
+g. Repeat the exercise 2000 times and prepare a comparison table (mean and standard errors) as well as histograms. What do you conclude?
+
+
+**5.** Assume $S_{0} = \$50$, $r = 0.05$, $\sigma = 0.50$, $\delta = 0$. The Black-Scholes price for a 2-year at-the-money put is $10.906$. Suppose that the stock price is lognormal but can also jump, with the number of jumps Poisson-distributed. Assume $\alpha = 0.05$ (the expected return to the stock price is equal to the risk-free rate), $\sigma = 0.50$, $\lambda = 2$, $\alpha_{J} = -0.04$, $\sigma_{J} = 0.08$. 
+
+a. Using 2000 simulations incorporating jumps, simulate the 2-year price and draw a histogram of continously compounded returns.
+
+b. Using Monte Carlo incorporating jumps, value a 2-year at-the-money put. Is this value significantly different from the Black-Scholes value?
+
+c. Explain why Monte Carlo is required in this case.
+
+
+**6.** This problem is taken from Chapter 4 of *Implementing Derivatives Models* by Clewlow and Strickland. Price a European arithmetic Asian call option. This option pays the difference (if positive) between the arithmetic average of the asset price $A_{T}$ and the strike price $K$ at maturity date $T$. The arithmetic average is taken over a set of observations (called *fixings*) of the asset price $S_{t_{i}}$ — which we assume follows geometric Brownian motion — at dates $t_{i}$, $i = 1, \ldots, N$:
+
+$$A_{T} = \frac{1}{N} \sum_{i=1}^{N} S_{t_{i}}$$
+
+There is no analytical solution for the arithmetic Asian option; however, a closed-form formula exists for the geometric Asian option. A geometric Asian call pays the difference (again, only if positive) between the geometric average $G_{T}$ and the strike $K$ at maturity:
+
+$$G_{T} = \left( \prod_{i=1}^{N} S_{t_{i}} \right)^{1/N}$$
+
+Since the geometric average of lognormal variables is itself lognormal, the geometric Asian call price is given by a modified Black--Scholes formula:
+
+$$C_{GA} = e^{-rT} \left( e^{a + \frac{1}{2}b} \, N(x) - K \, N(x - \sqrt{b}) \right)$$
+
+where
+
+$$\begin{aligned}
+a        &= \ln(G_{t}) + \frac{N - m}{N} \left( \ln(S) + \upsilon (t_{m+1} - t) + \tfrac{1}{2} \upsilon (T - t_{m+1}) \right) \\
+b        &= \frac{(N - m)^{2}}{N^{2}} \sigma^{2}(t_{m+1} - t) + \frac{\sigma^{2} (T - t_{m+1})}{6 N^{2}} (N - m)(2(N - m) - 1) \\
+\upsilon &= r - \delta - \tfrac{1}{2} \sigma^{2} \\
+x        &= \frac{a - \ln(K) + b}{\sqrt{b}}
+\end{aligned}$$
+
+Here $G_{t}$ is the current geometric average and $m$ is the index of the last known fixing. The geometric Asian option makes a good static-hedge control variate for the arithmetic Asian: we simulate the difference between the arithmetic and geometric payoffs (long one arithmetic Asian, short one geometric Asian). This avoids computing deltas at every time step while still achieving the variance reduction of a continuous delta hedge.
+
+Use the following parameters: $K = \$100$, $T = 1$ year, $S = \$100$, $\sigma = 0.20$, $r = 0.06$, $\delta = 0.03$, $N = 10$ equally spaced fixing dates, $M = 10{,}000$ simulations.
+
+a. Implement naive Risk-Neutral Monte Carlo to price the arithmetic Asian call. Report the estimated price and its standard error.
+
+b. Derive (or state) the closed-form geometric Asian call price $C_{GA}$ using the formula above and compute it numerically for these parameters.
+
+c. Implement the geometric Asian option as a control variate. Using $\beta = 1$, compute the controlled price estimate and compare its standard deviation to the naive estimate from (a).
+
+d. Estimate $\beta$ optimally from your simulations and recompute the controlled price. How much additional variance reduction does the optimal $\beta$ provide over $\beta = 1$?
+
+e. Repeat parts (a)--(d) using antithetic sampling in addition to the control variate. Summarize your results in a comparison table (estimated price, standard deviation, and $95\%$ confidence interval for each method). What do you conclude?
+
+
+## The Monte Carlo Way of Thinking 
+
+**7.** This problem is based on Chapter 8 of Brandimarte (2006). The standard Monte Carlo pricing approach computes option prices as discounted risk-neutral expectations. But there is a second, deeper route to the same number: **dynamic replication**. Under no-arbitrage, the cost of continuously delta-hedging a sold call must equal the option's fair price — otherwise a riskless profit would be available. Hedged Monte Carlo exploits this equivalence by simulating the replication strategy directly and averaging its cost across paths.
+
+The algorithm works as follows. For each simulated price path $S_{t_0}, S_{t_1}, \ldots, S_{t_N}$:
+
+1. At each step $j = 1, \ldots, N$, compute the Black-Scholes delta $\Delta_j = \Delta^{BS}(S_{t_j}, K, r, T - t_j, \sigma)$.
+2. The cash flow at step $j$ from rebalancing is $(\Delta_{j-1} - \Delta_j) \cdot S_{t_j}$ (proceeds from selling shares when delta falls, cost of buying when it rises), starting from a flat position $\Delta_0 = 0$.
+3. At expiry, settle the position: if $S_T > K$, deliver the share and receive $K$, netting against the remaining delta position; otherwise liquidate the stock position at $S_T$.
+4. Discount all cash flows to time $0$ and sum them. The negative of this sum is the replication cost for that path.
+
+The option price is estimated as the mean replication cost across all $M$ paths.
+
+Implement this in `Motoro.jl` as a new type `DeltaHedge` that inherits from `HedgeStrategy` analogous to the `StopLoss` strategy that we implemented together. Then:
+
+a. Explain in your own words why the average replication cost should converge to the Black-Scholes price as $M \to \infty$ and $N \to \infty$. What theorem guarantees the convergence in $M$? What does increasing $N$ approximate?
+
+b. Using the standard "McDonald" parameters ($S_0 = \$41$, $K = \$40$, $r = 0.08$, $\sigma = 0.30$, $\delta = 0$, $T = 1$), generate lognormal paths and call your function. With $M = 10{,}000$ paths and $N = 52$ time steps (weekly rebalancing), how close is the estimated price to the Black-Scholes price?
+
+c. Fix $M = 10{,}000$ and vary the number of rebalancing steps $N \in \{4, 12, 52, 252\}$. Plot the estimated price and its standard deviation as a function of $N$. What do you observe? What is the source of residual error even as $N \to \infty$?
+
+d. Fix $N = 52$ and vary $M \in \{100, 1{,}000, 5{,}000, 10{,}000\}$. How does the standard deviation of the replication cost scale with $M$? Does it follow the expected $1/\sqrt{M}$ Monte Carlo rate?
+
+e. Compare the variance of the hedged Monte Carlo estimator to naive risk-neutral Monte Carlo (same $M$, same paths). Which has lower variance? Explain intuitively why the replication approach can reduce variance — and under what conditions this advantage disappears.
+
+
+**8.** This problem is taken from Chapter 4 of *Implementing Derivatives Models* by Clewlow and Strickland and is inspired by the article @ClewlowCarverhillJD1994. Price a one-year maturity, at-the-money European call option with the current asset price at $\$100$ and volatility of $20$ per cent. The continuously compounded interest rate is assumed to be $6$ per cent per annum, the asset pays a continuous dividend yield of $3$ per cent per annum. The simulation has $10$ time steps and $100$ simulations; $K = \$100$, $T = 1$ year, $S = \$100$, $\sigma = 0.20$, $r = 0.06$, $\delta = 0.03$, $N = 10$, $M = 100$.
+
+The key idea is to use the Black-Scholes **delta** as a control variate. At each time step $i$, before evolving the asset price, compute the Black-Scholes delta $\Delta_i = \Delta^{BS}(S_i, t_i, K, T, \sigma, r, \delta)$. After evolving to $S_{i+1}$, accumulate the control variate:
+
+$$cv \mathrel{+}= \Delta_i \left( S_{i+1} - S_i \cdot e^{(r - \delta)\Delta t} \right)$$
+
+The quantity $S_i \cdot e^{(r-\delta)\Delta t}$ is $E[S_{i+1} \mid S_i]$ under the risk-neutral measure, so $E[cv] = 0$ and the control variate introduces no bias. The hedged payoff for each path is then:
+
+$$C_T = \max(0,\, S_T - K) + \beta_1 \cdot cv$$
+
+a. Explain why $\beta_1 = -1$ is the exact optimal coefficient for the delta control variate in the Black-Scholes world. What property of GBM makes this exact rather than merely approximate? Under what conditions would you need to estimate $\beta_1$ from data instead?
+
+b. Implement the delta-based control variate with $\beta_1 = -1$ using the base parameters above ($N = 10$, $M = 100$). Verify your implementation against the numerical example in Clewlow and Strickland Figure 4.10: the estimated call value should be approximately $9.0704$ with a standard error of approximately $0.1879$. Compare the standard error to naive Monte Carlo from the same paths.
+
+c. Now combine antithetic sampling with the delta control variate (Figure 4.11 in Clewlow and Strickland). For each simulation, generate a path using $+\varepsilon$ and a paired antithetic path using $-\varepsilon$, accumulating separate control variates $cv_1$ and $cv_2$ along each path. The hedged payoff per simulation pair is:
+$$C_T = 0.5 \left[ \max(0, S_{T,1} - K) + \beta_1 cv_1 + \max(0, S_{T,2} - K) + \beta_1 cv_2 \right]$$
+Verify against Figure 4.12: estimated call value $\approx 9.0669$, standard error $\approx 0.1715$.
+
+d. Extend the implementation to include a **gamma-based** control variate in addition to the delta (Figure 4.13). The gamma CV accumulates at each step:
+$$cv_2 \mathrel{+}= \Gamma_i \left[ (S_{i+1} - S_i)^2 - S_i^2 \cdot e_\gamma \right]$$
+where $e_\gamma = e^{(2(r-\delta)+\sigma^2)\Delta t} - 2e^{(r-\delta)\Delta t} + 1$ is $\mathrm{Var}(S_{i+1} \mid S_i)$ under the risk-neutral measure, and $\beta_2 = -0.5$. The combined hedged payoff is $C_T = 0.5[\max(0,S_{T,1}-K) + \max(0,S_{T,2}-K)] + \beta_1 cv_1 + \beta_2 cv_2$. Implement this and verify the order of magnitude of variance reduction.
+
+e. Reproduce Table 4.1 from Clewlow and Strickland using $N = 52$ time steps and $M = 1{,}000$ simulations (the Black-Scholes value is $9.1352$). Report the standard error and relative computation time for each of the four methods: (i) simple Monte Carlo, (ii) antithetic variates only, (iii) delta + gamma control variates, (iv) antithetic + delta + gamma. What do you conclude about the efficiency frontier of variance reduction techniques?
+
+
+\newpage 
+
+# References
+
